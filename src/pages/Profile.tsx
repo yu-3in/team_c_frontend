@@ -9,7 +9,7 @@ const Profile = () => {
         <div className={styles.contents}>
           <div className={styles.wrapper}>
             <div className={styles.profile}>
-              <div className={styles.contents}>
+              <div className={styles.profileContents}>
                 <div className="h-40 w-40 rounded-full bg-gray-500"></div>
                 <h1 className="my-5 border-b border-gray-300 pb-4 text-2xl">名前 なまえ</h1>
                 <div className="flex items-center">

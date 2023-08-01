@@ -19,6 +19,9 @@ body {
   width: 280px;
   padding-top: 40px;
 }
+.profileContents {
+  padding: 0 30px;
+}
 
 .data {
   flex: 1;

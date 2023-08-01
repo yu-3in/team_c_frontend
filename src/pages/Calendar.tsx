@@ -43,44 +43,48 @@ const Calendar = () => {
 
   return (
     <Layout>
-      <div className={styles.body}>
-        <div className={styles.side}>
-          <button onClick={createTicket}>チケット作成</button>
-          <div className={styles.userList}>
+      <div className={styles.contents}>
+        <div className={styles.wrapper}>
+          <div className={styles.side}>
+            <button onClick={createTicket}>チケット作成</button>
             <div className={styles.userHeading}>
               <h1>ユーザーリスト</h1>
             </div>
-            {userSample.map((user) => (
-              <Link to="/user" className={styles.userData} key={user.id}>
-                <div className={styles.iconArea}></div>
-                <div className={styles.contents}>
-                  <p className={styles.name}>{user.name}</p>
-                  <p className={styles.pos}>{user.pos}</p>
-                </div>
-              </Link>
-            ))}
+            <div className={styles.userList}>
+              {userSample.map((user) => (
+                <Link to="/user" key={user.id}>
+                  <div className={styles.userData}>
+                    <div className={styles.iconArea}></div>
+                    <div className={styles.content}>
+                      <p className={styles.name}>{user.name}</p>
+                      <p className={styles.pos}>{user.pos}</p>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
           </div>
-        </div>
-        <div className={styles.calendar}>
-          <FullCalendar
-            plugins={[timeGridPlugin, dayGridPlugin, interactionPlugin]}
-            initialView="timeGridWeek"
-            locales={[jaLocale]}
-            locale="ja"
-            headerToolbar={{
-              left: 'dayGridMonth,timeGridWeek,timeGridDay',
-              center: '',
-              right: 'prev,next',
-            }}
-            events={eventSample}
-            eventClick={(arg) =>
-              handleClick({
-                title: arg.event.title,
-                start: arg.event.start,
-                end: arg.event.end,
-              })
-            }
-          />
+          <div className={styles.calendar}>
+            <FullCalendar
+              plugins={[timeGridPlugin, dayGridPlugin, interactionPlugin]}
+              initialView="timeGridWeek"
+              locales={[jaLocale]}
+              locale="ja"
+              headerToolbar={{
+                left: 'dayGridMonth,timeGridWeek,timeGridDay',
+                center: '',
+                right: 'prev,next',
+              }}
+              events={eventSample}
+              eventClick={(arg) =>
+                handleClick({
+                  title: arg.event.title,
+                  start: arg.event.start,
+                  end: arg.event.end,
+                })
+              }
+            />
+          </div>
         </div>
       </div>
     </Layout>

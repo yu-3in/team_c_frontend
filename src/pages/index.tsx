@@ -15,7 +15,6 @@ export const Home: React.FC = () => {
 
   return (
     <Layout>
-      <button onClick={() => setOpenDrawer(true)}>Open Drawer</button>
       <SidePanel open={openDrawer} onClose={() => setOpenDrawer(false)}>
         <div className="mb-2 flex items-center justify-between p-4">
           <Typography variant="h5" color="blue-gray">
@@ -63,6 +62,7 @@ export const Home: React.FC = () => {
           />
         </div>
         <div className={styles.tickets}>
+          <button onClick={() => setOpenDrawer(true)}>Open Drawer</button>
           <div className={styles.area}></div>
           <div className={styles.area}></div>
         </div>

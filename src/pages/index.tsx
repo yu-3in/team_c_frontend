@@ -1,15 +1,21 @@
-import { Button } from '../Components/Button/Button'
+// import { Button } from '../components/Button/Button'
 import { Layout } from '../components/Layout/Layout'
 import { SidePanel } from '../components/Panel/SidePanel'
 import { useState } from 'react'
 import { IconButton, Input, Textarea, Typography } from '@material-tailwind/react'
+
+import FullCalendar from '@fullcalendar/react'
+import timeGridPlugin from '@fullcalendar/timegrid'
+import interactionPlugin from '@fullcalendar/interaction'
+import jaLocale from '@fullcalendar/core/locales/ja'
+import styles from '../styles/home.module.css'
 
 export const Home: React.FC = () => {
   const [openDrawer, setOpenDrawer] = useState(false)
 
   return (
     <Layout>
-      <Button onClick={() => setOpenDrawer(true)}>Open Drawer</Button>
+      <button onClick={() => setOpenDrawer(true)}>Open Drawer</button>
       <SidePanel open={openDrawer} onClose={() => setOpenDrawer(false)}>
         <div className="mb-2 flex items-center justify-between p-4">
           <Typography variant="h5" color="blue-gray">
@@ -31,9 +37,36 @@ export const Home: React.FC = () => {
           <Input type="email" label="Email" />
           <Input label="Subject" />
           <Textarea rows={6} label="Message" />
-          <Button>Send Message</Button>
+          <button>Send Message</button>
         </form>
       </SidePanel>
+
+      <div className={styles.body}>
+        <div className={styles.calender}>
+          <FullCalendar
+            plugins={[timeGridPlugin, interactionPlugin]}
+            initialView="timeGridDay"
+            locales={[jaLocale]}
+            locale="ja"
+            headerToolbar={{
+              left: '',
+              center: '',
+              right: 'prev,next',
+            }}
+            events={[
+              {
+                title: '要件定義書を作成',
+                start: '2023-08-01T10:00:00',
+                end: '2023-08-01T14:00:00',
+              },
+            ]}
+          />
+        </div>
+        <div className={styles.tickets}>
+          <div className={styles.area}></div>
+          <div className={styles.area}></div>
+        </div>
+      </div>
     </Layout>
   )
 }

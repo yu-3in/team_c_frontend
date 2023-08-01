@@ -1,11 +1,9 @@
-import { Button } from '@material-tailwind/react'
+import { Button } from '../components/Button/Button'
 
 export const Home: React.FC = () => {
   return (
     <div>
-      <div className="bg-red-200">
-        <Button>ホゲ</Button>
-      </div>
+      <Button value="作成する"></Button>
     </div>
   )
 }

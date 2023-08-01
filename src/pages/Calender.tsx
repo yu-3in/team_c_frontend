@@ -6,6 +6,7 @@ import interactionPlugin from '@fullcalendar/interaction'
 import jaLocale from '@fullcalendar/core/locales/ja'
 import styles from '../styles/calender.module.css'
 import { Layout } from '../components/Layout/Layout'
+import { Link } from 'react-router-dom'
 
 type eventType = {
   title: string
@@ -14,12 +15,21 @@ type eventType = {
 }
 
 const Calender = () => {
+  // ユーザーのサンプルデータ
+  const userSample = [
+    { name: '名前 なまえ', pos: 'GMOインターネット', id: 1 },
+    { name: '名前 なまえ', pos: 'GMOインターネット', id: 2 },
+    { name: '名前 なまえ', pos: 'GMOインターネット', id: 3 },
+    { name: '名前 なまえ', pos: 'GMOインターネット', id: 4 },
+  ]
+
+  // チケットのサンプルデータ
   const eventSample = [
     { title: '要件定義書を作成', start: '2023-08-01T10:00:00', end: '2023-08-01T14:00:00' },
     { title: 'hoge', start: '2023-08-02T10:00:00', end: '2023-08-02T16:00:00' },
   ]
 
-  // チケットクリック
+  // チケットをクリックしたとき
   const handleClick = (event: eventType) => {
     alert(event.title)
   }
@@ -32,29 +42,43 @@ const Calender = () => {
   return (
     <Layout>
       <div className={styles.body}>
-        <FullCalendar
-          plugins={[timeGridPlugin, dayGridPlugin, interactionPlugin]}
-          initialView="timeGridWeek"
-          locales={[jaLocale]}
-          locale="ja"
-          headerToolbar={{
-            left: 'dayGridMonth,timeGridWeek',
-            center: '',
-            right: 'prev,next',
-          }}
-          events={eventSample}
-          eventClick={(arg) =>
-            handleClick({
-              title: arg.event.title,
-              start: arg.event.start,
-              end: arg.event.end,
-            })
-          }
-        />
+        <div className={styles.side}>
+          <button onClick={createTicket}>チケット作成</button>
+          <div className={styles.userList}>
+            <h1>ユーザーリスト</h1>
+            {userSample.map((user) => (
+              <Link to="/user" className={styles.userData} key={user.id}>
+                <div className={styles.iconArea}></div>
+                <div className={styles.contents}>
+                  <p className={styles.name}>{user.name}</p>
+                  <p className={styles.pos}>{user.pos}</p>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+        <div className={styles.calender}>
+          <FullCalendar
+            plugins={[timeGridPlugin, dayGridPlugin, interactionPlugin]}
+            initialView="timeGridWeek"
+            locales={[jaLocale]}
+            locale="ja"
+            headerToolbar={{
+              left: 'dayGridMonth,timeGridWeek',
+              center: '',
+              right: 'prev,next',
+            }}
+            events={eventSample}
+            eventClick={(arg) =>
+              handleClick({
+                title: arg.event.title,
+                start: arg.event.start,
+                end: arg.event.end,
+              })
+            }
+          />
+        </div>
       </div>
-
-      {/* 作成ボタン */}
-      <button onClick={createTicket}>作成</button>
     </Layout>
   )
 }

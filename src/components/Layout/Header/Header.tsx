@@ -1,8 +1,11 @@
 import React, { useState } from 'react'
-import { Navbar, Collapse, Typography, Button, IconButton } from '@material-tailwind/react'
+import { Navbar, Collapse } from '@material-tailwind/react'
+import { Button, IconButton } from '@mui/material'
 import { NavList } from './NavList'
-import { RxHamburgerMenu } from 'react-icons/rx'
-import { IoCloseOutline, IoLogOutOutline } from 'react-icons/io5'
+import LogoutIcon from '@mui/icons-material/Logout'
+import MenuIcon from '@mui/icons-material/Menu'
+import CloseIcon from '@mui/icons-material/Close'
+import { useNavigate } from 'react-router-dom'
 
 export type HeaderProps = {
   //
@@ -10,42 +13,43 @@ export type HeaderProps = {
 
 export const Header: React.FC<HeaderProps> = () => {
   const [openNav, setOpenNav] = useState(false)
+  const navigate = useNavigate()
 
   return (
     <header>
       <Navbar className="mx-auto my-2 max-w-[95%] px-4 py-2">
         <div className="flex items-center justify-between text-blue-gray-900">
-          <Typography as="a" href="#" variant="h6" className="mr-4 cursor-pointer py-1.5 lg:ml-2">
-            Headier
-          </Typography>
+          <h6
+            className="mr-4 cursor-pointer py-1.5 text-inherit lg:ml-2"
+            onClick={() => navigate('/')}>
+            Header
+          </h6>
           <div className="flex">
             <div className="hidden lg:block">
               <NavList />
             </div>
-            <div className="hidden gap-2 lg:flex">
+            <div className="hidden gap-2 pl-2 lg:flex">
               {/* <Button variant="text" color="blue-gray">
                 ログイン
               </Button> */}
-              <IconButton color="teal">
-                <IoLogOutOutline />
+              <IconButton>
+                <LogoutIcon />
               </IconButton>
             </div>
-            <IconButton
-              variant="text"
-              color="blue-gray"
-              className="lg:hidden"
-              onClick={() => setOpenNav(!openNav)}>
-              {openNav ? <IoCloseOutline /> : <RxHamburgerMenu />}
-            </IconButton>
+            <div className="lg:hidden">
+              <IconButton className="lg:hidden" onClick={() => setOpenNav(!openNav)}>
+                {openNav ? <CloseIcon /> : <MenuIcon />}
+              </IconButton>
+            </div>
           </div>
         </div>
-        <Collapse open={openNav}>
+        <Collapse open={openNav} className="lg:hidden">
           <NavList />
-          <div className="flex w-full flex-nowrap items-center gap-2 lg:hidden">
-            <Button variant="outlined" size="sm" color="blue-gray" fullWidth>
+          <div className="flex w-full flex-nowrap items-center gap-2">
+            <Button variant="outlined" size="small" fullWidth>
               Sign In
             </Button>
-            <Button variant="gradient" size="sm" fullWidth>
+            <Button variant="contained" size="small" fullWidth>
               Sign Up
             </Button>
           </div>

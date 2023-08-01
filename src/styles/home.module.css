@@ -10,10 +10,7 @@
 }
 
 .tickets {
-  padding: 16px;
-  border-left: 1px solid #D1D1D6;
+  padding-left: 16px;
+  border-left: 1px solid #d1d1d6;
   flex-basis: 30%;
 }
-
-
-

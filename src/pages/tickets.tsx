@@ -132,12 +132,19 @@ const tickets: Ticket[] = [
 export const Tickets: React.FC = () => {
   return (
     <Layout>
-      <Container>
-        <div className="flex justify-center">
-          <div className="flex gap-4 overflow-x-auto pb-2">
-            <TicketList tickets={tickets} status="todo" />
-            <TicketList tickets={tickets} status="doing" />
-            <TicketList tickets={tickets} status="done" />
+      <Container maxWidth="xl">
+        <div className="flex justify-center px-8">
+          <div className="flex w-full gap-4 overflow-x-auto pb-2">
+            <div className="w-full">
+              <TicketList tickets={tickets} status="todo" />
+            </div>
+            <div className="w-full">
+              <TicketList tickets={tickets} status="doing" />
+            </div>
+
+            <div className="w-full">
+              <TicketList tickets={tickets} status="done" />
+            </div>
           </div>
         </div>
       </Container>

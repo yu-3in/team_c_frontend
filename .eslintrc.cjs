@@ -5,8 +5,8 @@ module.exports = {
   },
   extends: [
     'plugin:react/recommended',
-    'airbnb',
-    'airbnb/hooks',
+    // 'airbnb',
+    // 'airbnb/hooks',
     'plugin:import/errors',
     'plugin:import/warnings',
     'plugin:import/typescript',
@@ -26,7 +26,7 @@ module.exports = {
   },
   plugins: [
     'import',
-    'jsx-a11y',
+    // 'jsx-a11y',
     'prefer-arrow',
     'react',
     'react-hooks',

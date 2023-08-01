@@ -2,7 +2,6 @@ import { Status } from '../types/status'
 
 export const statusConfig: {
   [key in Status]: {
-    label: ReactNode
     color: string
     title: string
     circleColor: string

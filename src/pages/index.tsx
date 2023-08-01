@@ -150,7 +150,7 @@ export const Home: React.FC = () => {
     <Layout>
       <Container maxWidth="xl">
         <div className={styles.body}>
-          <div className={styles.calender}>
+          <div className={styles.calendar}>
             <FullCalendar
               plugins={[timeGridPlugin, interactionPlugin]}
               initialView="timeGridDay"

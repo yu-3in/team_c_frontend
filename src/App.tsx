@@ -1,6 +1,6 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { Home } from './pages'
-import Calender from './pages/Calender'
+import Calendar from './pages/Calendar'
 import { Tickets } from './pages/tickets'
 
 const App = () => {
@@ -8,7 +8,7 @@ const App = () => {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/calender" element={<Calender />} />
+        <Route path="/calendar" element={<Calendar />} />
         <Route path="tickets" element={<Tickets />} />
       </Routes>
     </BrowserRouter>

@@ -1,4 +1,4 @@
-import { Button } from '../components/Button/Button'
+import { Button } from '../Components/Button/Button'
 
 export const Home: React.FC = () => {
   return (

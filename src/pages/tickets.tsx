@@ -49,7 +49,7 @@ const tickets: Ticket[] = [
     id: 1,
     title: 'チケット1',
     description: 'チケット1の説明',
-    status: 'todo',
+    status: 'doing',
     dueDate: '2021-10-01',
     startAt: '2021-10-01',
     endAt: '2021-10-01',
@@ -90,7 +90,7 @@ const tickets: Ticket[] = [
     id: 1,
     title: 'チケット1',
     description: 'チケット1の説明',
-    status: 'todo',
+    status: 'done',
     dueDate: '2021-10-01',
     startAt: '2021-10-01',
     endAt: '2021-10-01',
@@ -133,8 +133,12 @@ export const Tickets: React.FC = () => {
   return (
     <Layout>
       <Container>
-        <div>
-          <TicketList tickets={tickets} status="todo" />
+        <div className="flex justify-center">
+          <div className="flex gap-4 overflow-x-auto pb-2">
+            <TicketList tickets={tickets} status="todo" />
+            <TicketList tickets={tickets} status="doing" />
+            <TicketList tickets={tickets} status="done" />
+          </div>
         </div>
       </Container>
     </Layout>

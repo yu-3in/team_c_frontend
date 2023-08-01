@@ -23,11 +23,11 @@ export type TicketListProps = {
 export const TicketList: React.FC<TicketListProps> = ({ tickets, status }) => {
   return (
     <ul
-      className="list-none space-y-6 rounded-xl p-4"
+      className="min-w-[340px] list-none space-y-6 rounded-xl p-4"
       style={{ backgroundColor: statusConfig[status].color }}>
       <div className="flex items-center gap-3 pl-2">
         <div
-          className="h-8 w-8 rounded-full"
+          className="h-6 w-6 rounded-full"
           style={{ backgroundColor: statusConfig[status].circleColor }}></div>
         <h2 className="text-3xl font-bold">{statusConfig[status].title}</h2>
       </div>

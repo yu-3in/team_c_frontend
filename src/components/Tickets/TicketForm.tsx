@@ -1,4 +1,12 @@
-import { Autocomplete, TextField, Button, FormHelperText, Select, MenuItem } from '@mui/material'
+import {
+  Autocomplete,
+  TextField,
+  Button,
+  FormHelperText,
+  Select,
+  MenuItem,
+  InputAdornment,
+} from '@mui/material'
 import { Ticket } from '../../types/ticket'
 import { DatePicker, DateTimePicker } from '@mui/x-date-pickers'
 import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form'
@@ -6,6 +14,7 @@ import { useCallback } from 'react'
 import dayjs from 'dayjs'
 import { renderTimeViewClock } from '@mui/x-date-pickers/timeViewRenderers'
 import { statusConfig } from '../../configs/status'
+import SearchIcon from '@mui/icons-material/Search'
 
 type GenreOption = {
   id: number
@@ -135,6 +144,14 @@ export const TicketForm: React.FC<TicketFormProps> = ({ ticket }) => {
                   <TextField
                     // eslint-disable-next-line react/jsx-props-no-spreading
                     {...params}
+                    InputProps={{
+                      ...params.InputProps,
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <SearchIcon />
+                        </InputAdornment>
+                      ),
+                    }}
                     error={!!fieldState.error}
                     helperText={fieldState.error?.message}
                   />
@@ -189,7 +206,7 @@ export const TicketForm: React.FC<TicketFormProps> = ({ ticket }) => {
             name="user"
             control={control}
             defaultValue={ticket?.user.name}
-            rules={{ required: '担当者をせたくしてください' }}
+            rules={{ required: '担当者を選択してください' }}
             render={({ fieldState }) => (
               <Autocomplete
                 options={users}
@@ -201,6 +218,13 @@ export const TicketForm: React.FC<TicketFormProps> = ({ ticket }) => {
                   <TextField
                     // eslint-disable-next-line react/jsx-props-no-spreading
                     {...params}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <SearchIcon />
+                        </InputAdornment>
+                      ),
+                    }}
                     error={!!fieldState.error}
                     helperText={fieldState.error?.message}
                   />

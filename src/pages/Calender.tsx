@@ -27,6 +27,8 @@ const Calender = () => {
   const eventSample = [
     { title: '要件定義書を作成', start: '2023-08-01T10:00:00', end: '2023-08-01T14:00:00' },
     { title: 'hoge', start: '2023-08-02T10:00:00', end: '2023-08-02T16:00:00' },
+    { title: 'hoge', start: '2023-08-03T10:00:00', end: '2023-08-03T16:00:00' },
+    { title: 'hoge', start: '2023-08-04T10:00:00', end: '2023-08-04T16:00:00' },
   ]
 
   // チケットをクリックしたとき
@@ -45,7 +47,9 @@ const Calender = () => {
         <div className={styles.side}>
           <button onClick={createTicket}>チケット作成</button>
           <div className={styles.userList}>
-            <h1>ユーザーリスト</h1>
+            <div className={styles.userHeading}>
+              <h1>ユーザーリスト</h1>
+            </div>
             {userSample.map((user) => (
               <Link to="/user" className={styles.userData} key={user.id}>
                 <div className={styles.iconArea}></div>
@@ -64,7 +68,7 @@ const Calender = () => {
             locales={[jaLocale]}
             locale="ja"
             headerToolbar={{
-              left: 'dayGridMonth,timeGridWeek',
+              left: 'dayGridMonth,timeGridWeek,timeGridDay',
               center: '',
               right: 'prev,next',
             }}

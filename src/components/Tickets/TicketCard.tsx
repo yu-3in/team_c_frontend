@@ -13,12 +13,15 @@ const StatusIcon: {
   done: <TaskAltIcon className="text-[#7441E1]" />,
 }
 
-export type TicketsCardProps = { ticket: Ticket }
+export type TicketsCardProps = {
+  ticket: Ticket
+  onClick?: () => void
+}
 
-export const TicketsCard: React.FC<TicketsCardProps> = ({ ticket }) => {
+export const TicketsCard: React.FC<TicketsCardProps> = ({ ticket, onClick }) => {
   return (
     <div className="min-w-[300px] rounded-xl bg-white shadow">
-      <CardActionArea>
+      <CardActionArea onClick={onClick}>
         <CardContent>
           <div className="flex items-center justify-between">
             <div className="space-y-1">

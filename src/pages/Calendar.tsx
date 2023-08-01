@@ -4,7 +4,7 @@ import timeGridPlugin from '@fullcalendar/timegrid'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import jaLocale from '@fullcalendar/core/locales/ja'
-import styles from '../styles/calender.module.css'
+import styles from '../styles/calendar.module.css'
 import { Layout } from '../components/Layout/Layout'
 import { Link } from 'react-router-dom'
 
@@ -14,7 +14,7 @@ type eventType = {
   end: Date | null
 }
 
-const Calender = () => {
+const Calendar = () => {
   // ユーザーのサンプルデータ
   const userSample = [
     { name: '名前 なまえ', pos: 'GMOインターネット', id: 1 },
@@ -61,7 +61,7 @@ const Calender = () => {
             ))}
           </div>
         </div>
-        <div className={styles.calender}>
+        <div className={styles.calendar}>
           <FullCalendar
             plugins={[timeGridPlugin, dayGridPlugin, interactionPlugin]}
             initialView="timeGridWeek"
@@ -87,4 +87,4 @@ const Calender = () => {
   )
 }
 
-export default Calender
+export default Calendar

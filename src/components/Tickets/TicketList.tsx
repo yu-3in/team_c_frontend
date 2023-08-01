@@ -18,9 +18,10 @@ export type TicketListProps = {
   tickets: Ticket[]
   color?: string
   status: Status
+  onClick?: () => void
 }
 
-export const TicketList: React.FC<TicketListProps> = ({ tickets, status }) => {
+export const TicketList: React.FC<TicketListProps> = ({ tickets, status, onClick }) => {
   return (
     <ul
       className="min-w-[340px] list-none space-y-6 rounded-xl p-4"
@@ -34,7 +35,7 @@ export const TicketList: React.FC<TicketListProps> = ({ tickets, status }) => {
 
       {tickets.map((ticket) => (
         <li key={ticket.id}>
-          <TicketsCard ticket={ticket} />
+          <TicketsCard ticket={ticket} onClick={onClick} />
         </li>
       ))}
     </ul>

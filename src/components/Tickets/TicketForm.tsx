@@ -1,10 +1,11 @@
-import { Autocomplete, TextField, Button, FormHelperText } from '@mui/material'
+import { Autocomplete, TextField, Button, FormHelperText, Select, MenuItem } from '@mui/material'
 import { Ticket } from '../../types/ticket'
 import { DatePicker, DateTimePicker } from '@mui/x-date-pickers'
 import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 import { useCallback } from 'react'
 import dayjs from 'dayjs'
 import { renderTimeViewClock } from '@mui/x-date-pickers/timeViewRenderers'
+import { statusConfig } from '../../configs/status'
 
 type GenreOption = {
   id: number
@@ -122,7 +123,7 @@ export const TicketForm: React.FC<TicketFormProps> = ({ ticket }) => {
             name="genre"
             control={control}
             defaultValue={ticket?.genre.title}
-            rules={{ required: 'ジャンルを入力してください' }}
+            rules={{ required: 'ジャンルを選択してください' }}
             render={({ fieldState }) => (
               <Autocomplete
                 options={genres}
@@ -149,12 +150,46 @@ export const TicketForm: React.FC<TicketFormProps> = ({ ticket }) => {
           />
         </div>
         <div className="flex w-full flex-col gap-1 px-3">
+          <label className="font-bold text-gray-700">ステータス</label>
+          <Controller
+            name="status"
+            control={control}
+            defaultValue={ticket?.status}
+            rules={{ required: 'ステータスを選択してください' }}
+            render={({ field, fieldState }) => (
+              <>
+                <Select
+                  // eslint-disable-next-line react/jsx-props-no-spreading
+                  {...field}
+                  error={!!fieldState.error}
+                  onChange={(_, value) =>
+                    setValue('genre', value, {
+                      shouldValidate: true,
+                      shouldDirty: true,
+                    })
+                  }>
+                  {Object.entries(statusConfig).map(([key, value]) => (
+                    <MenuItem key={key} value={key} defaultChecked={ticket?.status === key}>
+                      {value.title}
+                    </MenuItem>
+                  ))}
+                </Select>
+                {fieldState.error && (
+                  <FormHelperText error sx={{ pl: 2 }}>
+                    {fieldState.error.message}
+                  </FormHelperText>
+                )}
+              </>
+            )}
+          />
+        </div>
+        <div className="flex w-full flex-col gap-1 px-3">
           <label className="font-bold text-gray-700">担当者</label>
           <Controller
             name="user"
             control={control}
             defaultValue={ticket?.user.name}
-            rules={{ required: '担当者を入力してください' }}
+            rules={{ required: '担当者をせたくしてください' }}
             render={({ fieldState }) => (
               <Autocomplete
                 options={users}

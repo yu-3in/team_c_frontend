@@ -140,9 +140,11 @@ const tickets: Ticket[] = [
 
 export const Home: React.FC = () => {
   const [openDrawer, setOpenDrawer] = useState(false)
+  const [clickedTicket, setClickedTicket] = useState<Ticket>()
 
-  const handleClickTicketCard = useCallback(() => {
+  const handleClickTicketCard = useCallback((ticket: Ticket) => {
     setOpenDrawer(true)
+    setClickedTicket(ticket)
   }, [])
 
   return (
@@ -162,7 +164,7 @@ export const Home: React.FC = () => {
               open={openDrawer}
               title="チケットを編集する"
               onClose={() => setOpenDrawer(false)}>
-              <TicketForm ticket={tickets[0]} />
+              <TicketForm ticket={clickedTicket} />
             </SidePanel>
           </div>
           <div className={styles.calendar}>

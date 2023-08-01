@@ -136,7 +136,7 @@ export const TicketForm: React.FC<TicketFormProps> = ({ ticket }) => {
             render={({ fieldState }) => (
               <Autocomplete
                 options={genres}
-                defaultValue={ticket?.genre.title}
+                defaultValue={ticket?.genre}
                 getOptionLabel={(option: GenreOption | string) =>
                   typeof option === 'string' ? option : option.title
                 }
@@ -205,7 +205,7 @@ export const TicketForm: React.FC<TicketFormProps> = ({ ticket }) => {
           <Controller
             name="user"
             control={control}
-            defaultValue={ticket?.user.name}
+            defaultValue={ticket?.user}
             rules={{ required: '担当者を選択してください' }}
             render={({ fieldState }) => (
               <Autocomplete

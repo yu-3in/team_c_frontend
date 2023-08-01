@@ -1,7 +1,8 @@
+import { Button } from '../Components/Button/Button'
 import { Layout } from '../components/Layout/Layout'
 import { SidePanel } from '../components/Panel/SidePanel'
 import { useState } from 'react'
-import { Button, IconButton, Input, Textarea, Typography } from '@material-tailwind/react'
+import { IconButton, Input, Textarea, Typography } from '@material-tailwind/react'
 
 export const Home: React.FC = () => {
   const [openDrawer, setOpenDrawer] = useState(false)

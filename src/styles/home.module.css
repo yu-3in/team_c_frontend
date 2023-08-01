@@ -1,0 +1,12 @@
+.body {
+  display: flex;
+}
+
+.calender {
+  flex-basis: 60%;
+}
+
+.tickets {
+  flex-basis: 40%;
+}
+

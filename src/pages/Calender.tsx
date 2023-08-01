@@ -5,6 +5,7 @@ import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import jaLocale from '@fullcalendar/core/locales/ja'
 import styles from '../styles/calender.module.css'
+import { Layout } from '../components/Layout/Layout'
 
 type eventType = {
   title: string
@@ -29,7 +30,7 @@ const Calender = () => {
   }
 
   return (
-    <>
+    <Layout>
       <div className={styles.body}>
         <FullCalendar
           plugins={[timeGridPlugin, dayGridPlugin, interactionPlugin]}
@@ -54,7 +55,7 @@ const Calender = () => {
 
       {/* 作成ボタン */}
       <button onClick={createTicket}>作成</button>
-    </>
+    </Layout>
   )
 }
 

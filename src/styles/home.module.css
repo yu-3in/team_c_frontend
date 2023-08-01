@@ -1,12 +1,19 @@
 .body {
   display: flex;
+  padding: 16px;
+  padding-top: 0;
 }
 
 .calender {
-  flex-basis: 60%;
+  flex-basis: 70%;
+  padding: 16px;
 }
 
 .tickets {
-  flex-basis: 40%;
+  padding: 16px;
+  border-left: 1px solid #D1D1D6;
+  flex-basis: 30%;
 }
+
+
 

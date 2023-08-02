@@ -7,7 +7,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import ja from 'dayjs/locale/ja'
 import Login from './pages/Login'
-import SignIn from './pages/SignIn'
+import SignUp from './pages/SignUp'
 
 const App = () => {
   console.log(ja.name)
@@ -21,7 +21,7 @@ const App = () => {
           <Route path="tickets" element={<Tickets />} />
           <Route path="profile" element={<Profile />} />
           <Route path="login" element={<Login />} />
-          <Route path="signin" element={<SignIn />} />
+          <Route path="signup" element={<SignUp />} />
         </Routes>
       </LocalizationProvider>
     </BrowserRouter>

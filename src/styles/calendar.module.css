@@ -21,7 +21,7 @@ body {
 
 .calendar {
   flex: 1;
-  padding: 20px;
+  padding: 16px;
   background: white;
   border-radius: 6px;
   height: 100%;

@@ -1,4 +1,3 @@
-import { Button } from '../components/Button/Button'
 import { Layout } from '../components/Layout/Layout'
 import { SidePanel } from '../components/Panel/SidePanel'
 import { useCallback, useState } from 'react'
@@ -7,7 +6,6 @@ import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import jaLocale from '@fullcalendar/core/locales/ja'
 import styles from '../styles/home.module.css'
-import { Container } from '@mui/material'
 import { TicketList } from '../components/Tickets/TicketList'
 import { Ticket } from '../types/ticket'
 import { TicketForm } from '../components/Tickets/TicketForm'
@@ -150,46 +148,46 @@ export const Home: React.FC = () => {
   return (
     <>
       <Layout>
-        <Container maxWidth="xl">
-          <div className={styles.body}>
-            <div className={styles.tickets}>
-              <div className="flex flex-col items-center gap-4">
-                <div className="w-full">
-                  <TicketList tickets={tickets} status="doing" onClick={handleClickTicketCard} />
-                </div>
-                <div className="w-full">
-                  <TicketList tickets={tickets} status="todo" onClick={handleClickTicketCard} />
-                </div>
+        <div className={styles.body}>
+          <div className={styles.tickets}>
+            <div className="flex flex-col items-center gap-4">
+              <div className="w-full">
+                <TicketList tickets={tickets} status="doing" onClick={handleClickTicketCard} />
               </div>
-              <SidePanel
-                open={openDrawer}
-                title="チケットを編集する"
-                onClose={() => setOpenDrawer(false)}>
-                <TicketForm ticket={clickedTicket} />
-              </SidePanel>
+              <div className="w-full">
+                <TicketList tickets={tickets} status="todo" onClick={handleClickTicketCard} />
+              </div>
             </div>
-            <div className={styles.calendar}>
-              <FullCalendar
-                plugins={[timeGridPlugin, interactionPlugin]}
-                initialView="timeGridDay"
-                locales={[jaLocale]}
-                locale="ja"
-                headerToolbar={{
-                  left: '',
-                  center: '',
-                  right: 'prev,next',
-                }}
-                events={[
-                  {
-                    title: '要件定義書を作成',
-                    start: '2023-08-01T10:00:00',
-                    end: '2023-08-01T14:00:00',
-                  },
-                ]}
-              />
-            </div>
+            <SidePanel
+              open={openDrawer}
+              title="チケットを編集する"
+              onClose={() => setOpenDrawer(false)}>
+              <TicketForm ticket={clickedTicket} />
+            </SidePanel>
           </div>
-        </Container>
+
+          <div className={styles.calendar}>
+            <FullCalendar
+              height="100%"
+              plugins={[timeGridPlugin, interactionPlugin]}
+              initialView="timeGridDay"
+              locales={[jaLocale]}
+              locale="ja"
+              headerToolbar={{
+                left: '',
+                center: '',
+                right: 'prev,next',
+              }}
+              events={[
+                {
+                  title: '要件定義書を作成',
+                  start: '2023-08-01T10:00:00',
+                  end: '2023-08-01T14:00:00',
+                },
+              ]}
+            />
+          </div>
+        </div>
       </Layout>
     </>
   )

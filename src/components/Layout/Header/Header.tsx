@@ -28,7 +28,7 @@ export const Header: React.FC<HeaderProps> = () => {
             <div className="hidden lg:block">
               <NavList />
             </div>
-            <div className="hidden gap-2 pl-2 lg:flex">
+            <div className="hidden gap-2 lg:flex">
               {/* <Button variant="text" color="blue-gray">
                 ログイン
               </Button> */}

@@ -1,169 +1,66 @@
-import { Container } from '@mui/material'
+import { Button, Container } from '@mui/material'
 import { Layout } from '../components/Layout/Layout'
 import { TicketList } from '../components/Tickets/TicketList'
 import { Ticket } from '../types/ticket'
 import { useState, useCallback } from 'react'
 import { SidePanel } from '../components/Panel/SidePanel'
 import { TicketForm } from '../components/Tickets/TicketForm'
-
-const tickets: Ticket[] = [
-  {
-    id: 1,
-    title: 'チケット1',
-    description: 'チケット1の説明',
-    status: 'todo',
-    dueDate: '2021-10-01',
-    startAt: '2021-10-01',
-    endAt: '2021-10-01',
-    user: {
-      id: 1,
-      name: 'ユーザー1',
-      email: 'example@test.com',
-      genres: [
-        {
-          id: 1,
-          title: 'ジャンル1',
-          createdAt: '2021-10-01',
-          updatedAt: '2021-10-01',
-          color: '#07C3DD',
-        },
-        {
-          id: 2,
-          title: 'ジャンル2',
-          createdAt: '2021-10-01',
-          updatedAt: '2021-10-01',
-          color: '#07C3DD',
-        },
-      ],
-      createdAt: '2021-10-01',
-      updatedAt: '2021-10-01',
-    },
-    genre: {
-      id: 1,
-      title: 'ジャンル1',
-      createdAt: '2021-10-01',
-      updatedAt: '2021-10-01',
-      color: '#07C3DD',
-    },
-    createdAt: '2021-10-01',
-    updatedAt: '2021-10-01',
-  },
-  {
-    id: 1,
-    title: 'チケット1',
-    description: 'チケット1の説明',
-    status: 'doing',
-    dueDate: '2021-10-01',
-    startAt: '2021-10-01',
-    endAt: '2021-10-01',
-    user: {
-      id: 1,
-      name: 'ユーザー1',
-      email: 'example@test.com',
-      genres: [
-        {
-          id: 1,
-          title: 'ジャンル1',
-          createdAt: '2021-10-01',
-          updatedAt: '2021-10-01',
-          color: '#07C3DD',
-        },
-        {
-          id: 2,
-          title: 'ジャンル2',
-          createdAt: '2021-10-01',
-          updatedAt: '2021-10-01',
-          color: '#07C3DD',
-        },
-      ],
-      createdAt: '2021-10-01',
-      updatedAt: '2021-10-01',
-    },
-    genre: {
-      id: 1,
-      title: 'ジャンル1',
-      createdAt: '2021-10-01',
-      updatedAt: '2021-10-01',
-      color: '#07C3DD',
-    },
-    createdAt: '2021-10-01',
-    updatedAt: '2021-10-01',
-  },
-  {
-    id: 1,
-    title: 'チケット1',
-    description: 'チケット1の説明',
-    status: 'done',
-    dueDate: '2021-10-01',
-    startAt: '2021-10-01',
-    endAt: '2021-10-01',
-    user: {
-      id: 1,
-      name: 'ユーザー1',
-      email: 'example@test.com',
-      genres: [
-        {
-          id: 1,
-          title: 'ジャンル1',
-          createdAt: '2021-10-01',
-          updatedAt: '2021-10-01',
-          color: '#07C3DD',
-        },
-        {
-          id: 2,
-          title: 'ジャンル2',
-          createdAt: '2021-10-01',
-          updatedAt: '2021-10-01',
-          color: '#07C3DD',
-        },
-      ],
-      createdAt: '2021-10-01',
-      updatedAt: '2021-10-01',
-    },
-    genre: {
-      id: 1,
-      title: 'ジャンル1',
-      createdAt: '2021-10-01',
-      updatedAt: '2021-10-01',
-      color: '#07C3DD',
-    },
-    createdAt: '2021-10-01',
-    updatedAt: '2021-10-01',
-  },
-]
+import { useQuery } from 'react-query'
+import { getTickets } from '../apis/ticket'
+import { Status } from '../types/status'
+import AddIcon from '@mui/icons-material/Add'
 
 export const Tickets: React.FC = () => {
-  const [openDrawer, setOpenDrawer] = useState(false)
+  const [openCreateDrawer, setOpenCreateDrawer] = useState(false)
+  const [openEditDrawer, setOpenEditDrawer] = useState(false)
   const [clickedTicket, setClickedTicket] = useState<Ticket>()
+  const { data: tickets } = useQuery(['tickets'], () => getTickets())
 
   const handleClickTicketCard = useCallback((ticket: Ticket) => {
-    setOpenDrawer(true)
+    setOpenEditDrawer(true)
     setClickedTicket(ticket)
   }, [])
 
   return (
     <Layout>
       <Container maxWidth="xl">
-        <div className="flex justify-center px-8">
-          <div className="flex w-full gap-4 overflow-x-auto pb-2">
-            <div className="w-full">
-              <TicketList tickets={tickets} status="todo" onClick={handleClickTicketCard} />
-            </div>
-            <div className="w-full">
-              <TicketList tickets={tickets} status="doing" onClick={handleClickTicketCard} />
-            </div>
-
-            <div className="w-full">
-              <TicketList tickets={tickets} status="done" onClick={handleClickTicketCard} />
+        <div className="px-8">
+          <div className="mb-4 flex justify-end">
+            <Button
+              variant="contained"
+              color="info"
+              startIcon={<AddIcon />}
+              onClick={() => setOpenCreateDrawer(true)}>
+              作成する
+            </Button>
+          </div>
+          <div className="flex justify-center">
+            <div className="flex w-full gap-4 overflow-x-auto pb-2">
+              {['todo', 'doing', 'done'].map((status) => (
+                <div className="w-full" key={status}>
+                  <TicketList
+                    tickets={tickets?.filter((ticket) => ticket.status === status) ?? []}
+                    status={status as Status}
+                    onClick={handleClickTicketCard}
+                    className="min-h-[75vh]"
+                  />
+                </div>
+              ))}
             </div>
           </div>
+          <SidePanel
+            open={openEditDrawer}
+            title="チケットを編集する"
+            onClose={() => setOpenEditDrawer(false)}>
+            <TicketForm ticket={clickedTicket} />
+          </SidePanel>
+          <SidePanel
+            open={openCreateDrawer}
+            title="チケットを作成する"
+            onClose={() => setOpenCreateDrawer(false)}>
+            <TicketForm />
+          </SidePanel>
         </div>
-        <SidePanel
-          open={openDrawer}
-          title="チケットを編集する"
-          onClose={() => setOpenDrawer(false)}>
-          <TicketForm ticket={clickedTicket} />
-        </SidePanel>
       </Container>
     </Layout>
   )

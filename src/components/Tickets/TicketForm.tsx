@@ -9,9 +9,8 @@ import {
 } from '@mui/material'
 import { Ticket } from '../../types/ticket'
 import { DatePicker, DateTimePicker } from '@mui/x-date-pickers'
-import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form'
+import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { useCallback } from 'react'
-import dayjs from 'dayjs'
 import { renderTimeViewClock } from '@mui/x-date-pickers/timeViewRenderers'
 import { statusConfig } from '../../configs/status'
 import SearchIcon from '@mui/icons-material/Search'
@@ -62,15 +61,40 @@ const users = [
   },
 ]
 
+type FormData = {
+  title: string
+  description?: string
+  genreId: number
+  status: string
+  userId?: number
+  dueDate?: string
+  startAt?: string
+  endAt?: string
+}
+
 export type TicketFormProps = {
   ticket?: Ticket
 }
 
 export const TicketForm: React.FC<TicketFormProps> = ({ ticket }) => {
-  const { control, handleSubmit, setValue } = useForm()
+  const { control, handleSubmit } = useForm<FormData>()
 
-  const onSubmit: SubmitHandler<FieldValues> = useCallback((data) => {
-    console.log(data)
+  const onSubmit: SubmitHandler<FormData> = useCallback((_) => {
+    if (ticket) {
+      // update
+      // const req: TicketRequest = {
+      //   title: data.title,
+      //   description: data.description,
+      //   genreId: data.genreId,
+      //   status: data.status,
+      //   userId: data.userId,
+      //   dueDate: dayjs(data.dueDate).format('YYYY/MM/DD:HH:mm'),
+      //   startAt: dayjs(data.startAt).format('YYYY/MM/DD'),
+      //   endAt: dayjs(data.endAt).format('YYYY/MM/DD'),
+      // }
+    } else {
+      // create
+    }
   }, [])
 
   return (
@@ -119,16 +143,16 @@ export const TicketForm: React.FC<TicketFormProps> = ({ ticket }) => {
         <div className="flex w-full flex-col gap-1 px-3">
           <label className="font-bold text-gray-700">ジャンル</label>
           <Controller
-            name="genre"
+            name="genreId"
             control={control}
-            defaultValue={ticket?.genre.id.toString()}
+            defaultValue={ticket?.genre.id}
             rules={{ required: 'ジャンルを選択してください' }}
             render={({ fieldState }) => (
               <Autocomplete
-                options={genres.map((genre) => genre.id.toString())}
-                defaultValue={ticket?.genre.id.toString()}
+                options={genres.map((genre) => genre.id)}
+                defaultValue={ticket?.genre.id}
                 getOptionLabel={(option) =>
-                  genres.find((genre) => genre.id.toString() === option)?.title ?? ''
+                  genres.find((genre) => genre.id === option)?.title ?? ''
                 }
                 renderInput={(params) => (
                   <TextField
@@ -146,12 +170,12 @@ export const TicketForm: React.FC<TicketFormProps> = ({ ticket }) => {
                     helperText={fieldState.error?.message}
                   />
                 )}
-                onChange={(_, value) =>
-                  setValue('genre', value, {
-                    shouldValidate: true,
-                    shouldDirty: true,
-                  })
-                }
+                // onChange={(_, value) =>
+                // setValue('genreId', value, {
+                //   shouldValidate: true,
+                //   shouldDirty: true,
+                // })
+                // }
               />
             )}
           />
@@ -169,12 +193,13 @@ export const TicketForm: React.FC<TicketFormProps> = ({ ticket }) => {
                   // eslint-disable-next-line react/jsx-props-no-spreading
                   {...field}
                   error={!!fieldState.error}
-                  onChange={(_, value) =>
-                    setValue('genre', value, {
-                      shouldValidate: true,
-                      shouldDirty: true,
-                    })
-                  }>
+                  // onChange={(_, value) =>
+                  //   setValue('status', value, {
+                  //     shouldValidate: true,
+                  //     shouldDirty: true,
+                  //   })
+                  // }
+                >
                   {Object.entries(statusConfig).map(([key, value]) => (
                     <MenuItem key={key} value={key} defaultChecked={ticket?.status === key}>
                       {value.title}
@@ -193,17 +218,15 @@ export const TicketForm: React.FC<TicketFormProps> = ({ ticket }) => {
         <div className="flex w-full flex-col gap-1 px-3">
           <label className="font-bold text-gray-700">担当者</label>
           <Controller
-            name="user"
+            name="userId"
             control={control}
-            defaultValue={ticket?.user.id.toString()}
+            defaultValue={ticket?.user.id}
             rules={{ required: '担当者を選択してください' }}
             render={({ fieldState }) => (
               <Autocomplete
-                options={users.map((user) => user.id.toString())}
-                defaultValue={ticket?.user.id.toString()}
-                getOptionLabel={(option) =>
-                  users.find((user) => user.id.toString() === option)?.name ?? ''
-                }
+                options={users.map((user) => user.id)}
+                defaultValue={ticket?.user.id}
+                getOptionLabel={(option) => users.find((user) => user.id === option)?.name ?? ''}
                 renderInput={(params) => (
                   <TextField
                     // eslint-disable-next-line react/jsx-props-no-spreading
@@ -220,12 +243,12 @@ export const TicketForm: React.FC<TicketFormProps> = ({ ticket }) => {
                     helperText={fieldState.error?.message}
                   />
                 )}
-                onChange={(_, value) =>
-                  setValue('user', value, {
-                    shouldValidate: true,
-                    shouldDirty: true,
-                  })
-                }
+                // onChange={(_, value) =>
+                // setValue('user', value, {
+                //   shouldValidate: true,
+                //   shouldDirty: true,
+                // })
+                // }
               />
             )}
           />
@@ -235,15 +258,15 @@ export const TicketForm: React.FC<TicketFormProps> = ({ ticket }) => {
           <Controller
             name="dueDate"
             control={control}
-            defaultValue={dayjs(ticket?.dueDate)}
-            rules={{
-              validate: (value: string) => {
-                const formatDate = dayjs(value).format('YYYY/MM/DD:HH:mm')
-                if (!dayjs(formatDate).isValid()) {
-                  return '日付形式が間違っています'
-                }
-              },
-            }}
+            // defaultValue={dayjs(ticket?.dueDate)}
+            // rules={{
+            //   validate: (value: string) => {
+            //     const formatDate = dayjs(value).format('YYYY/MM/DD:HH:mm')
+            //     if (!dayjs(formatDate).isValid()) {
+            //       return '日付形式が間違っています'
+            //     }
+            //   },
+            // }}
             render={({ field, fieldState }) => (
               <>
                 <DateTimePicker
@@ -273,15 +296,15 @@ export const TicketForm: React.FC<TicketFormProps> = ({ ticket }) => {
             <Controller
               name="startAt"
               control={control}
-              defaultValue={dayjs(ticket?.startAt)}
-              rules={{
-                validate: (value: string) => {
-                  const formatDate = dayjs(value).format('YYYY/MM/DD')
-                  if (!dayjs(formatDate).isValid()) {
-                    return '日付形式が間違っています'
-                  }
-                },
-              }}
+              // defaultValue={dayjs(ticket?.startAt)}
+              // rules={{
+              //   validate: (value: string) => {
+              //     const formatDate = dayjs(value).format('YYYY/MM/DD')
+              //     if (!dayjs(formatDate).isValid()) {
+              //       return '日付形式が間違っています'
+              //     }
+              //   },
+              // }}
               render={({ field, fieldState }) => (
                 <>
                   <DatePicker
@@ -304,15 +327,15 @@ export const TicketForm: React.FC<TicketFormProps> = ({ ticket }) => {
             <Controller
               name="endAt"
               control={control}
-              defaultValue={dayjs(ticket?.endAt)}
-              rules={{
-                validate: (value: string) => {
-                  const formatDate = dayjs(value).format('YYYY/MM/DD')
-                  if (!dayjs(formatDate).isValid()) {
-                    return '日付形式が間違っています'
-                  }
-                },
-              }}
+              // defaultValue={dayjs(ticket?.endAt)}
+              // rules={{
+              //   validate: (value: string) => {
+              //     const formatDate = dayjs(value).format('YYYY/MM/DD')
+              //     if (!dayjs(formatDate).isValid()) {
+              //       return '日付形式が間違っています'
+              //     }
+              //   },
+              // }}
               render={({ field, fieldState }) => (
                 <>
                   <DatePicker

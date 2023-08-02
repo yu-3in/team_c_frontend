@@ -191,10 +191,6 @@ export const Home: React.FC = () => {
           </div>
         </Container>
       </Layout>
-      <Layout>
-        <Button variant="outline">キャンセル</Button>
-        <Button variant="fill">作成する</Button>
-      </Layout>
     </>
   )
 }

@@ -1,0 +1,42 @@
+カレンダーのスタイルを修正
+
+.fc-event {
+  background-color: #0074d9;
+  color: #fff;
+}
+/* ヘッダーの日にち */
+.fc-col-header-cell-cushion {
+  font-weight: 500;
+}
+.fc-theme-standard .fc-scrollgrid {
+  border: none;
+}
+.fc td, .fc th {
+  border-style: none;
+}
+
+thead {
+  border: 1px solid #e4e4e4 ;
+}
+
+.fc-daygrid-day-frame {
+  border-bottom: 1px solid #e4e4e4 ;
+}
+
+.fc-timegrid-slot-label-cushion, .fc-timegrid-axis-cushion {
+  color: #636366;
+  font-size: 12px;
+}
+
+.fc-event {
+  padding: 6px;
+  cursor: pointer;
+}
+
+.fc .fc-toolbar.fc-header-toolbar {
+  margin-bottom: 10px;
+}
+
+.fc-scrollgrid, .fc-scrollgrid-liquid {
+  gap: 10px;
+}

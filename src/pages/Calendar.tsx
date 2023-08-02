@@ -8,6 +8,9 @@ import styles from '../styles/calendar.module.css'
 import { Layout } from '../components/Layout/Layout'
 import { Link } from 'react-router-dom'
 
+// カレンダーに関するスタイル
+import '../styles/calendar-global.css'
+
 type eventType = {
   title: string
   start: Date | null
@@ -66,6 +69,7 @@ const Calendar = () => {
           </div>
           <div className={styles.calendar}>
             <FullCalendar
+              height="100%"
               plugins={[timeGridPlugin, dayGridPlugin, interactionPlugin]}
               initialView="timeGridWeek"
               locales={[jaLocale]}

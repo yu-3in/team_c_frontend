@@ -43,7 +43,7 @@ const Profile = () => {
       plotLines: [
         {
           value: 0, // 点数が0の位置にプロットラインを追加
-          color: '#e4e4e4', // 点数が0の位置の横線の色を赤色に設定
+          color: '#e4e4e4',
           width: 1,
           zIndex: 5,
         },
@@ -64,10 +64,20 @@ const Profile = () => {
       enabled: false,
     },
     plotOptions: {
+      responsive: {},
       column: {
         // 棒の色を変更
         // color: 'blue',
       },
+    },
+    responsive: {
+      rules: [
+        {
+          condition: {
+            minWidth: 100,
+          },
+        },
+      ],
     },
   }
 

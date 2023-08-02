@@ -148,51 +148,53 @@ export const Home: React.FC = () => {
   }, [])
 
   return (
-    <Layout>
-      <Container maxWidth="xl">
-        <div className={styles.body}>
-          <div className={styles.tickets}>
-            <div className="flex flex-col items-center gap-4">
-              <div className="w-full">
-                <TicketList tickets={tickets} status="doing" onClick={handleClickTicketCard} />
+    <>
+      <Layout>
+        <Container maxWidth="xl">
+          <div className={styles.body}>
+            <div className={styles.tickets}>
+              <div className="flex flex-col items-center gap-4">
+                <div className="w-full">
+                  <TicketList tickets={tickets} status="doing" onClick={handleClickTicketCard} />
+                </div>
+                <div className="w-full">
+                  <TicketList tickets={tickets} status="todo" onClick={handleClickTicketCard} />
+                </div>
               </div>
-              <div className="w-full">
-                <TicketList tickets={tickets} status="todo" onClick={handleClickTicketCard} />
-              </div>
+              <SidePanel
+                open={openDrawer}
+                title="チケットを編集する"
+                onClose={() => setOpenDrawer(false)}>
+                <TicketForm ticket={clickedTicket} />
+              </SidePanel>
             </div>
-            <SidePanel
-              open={openDrawer}
-              title="チケットを編集する"
-              onClose={() => setOpenDrawer(false)}>
-              <TicketForm ticket={clickedTicket} />
-            </SidePanel>
+            <div className={styles.calendar}>
+              <FullCalendar
+                plugins={[timeGridPlugin, interactionPlugin]}
+                initialView="timeGridDay"
+                locales={[jaLocale]}
+                locale="ja"
+                headerToolbar={{
+                  left: '',
+                  center: '',
+                  right: 'prev,next',
+                }}
+                events={[
+                  {
+                    title: '要件定義書を作成',
+                    start: '2023-08-01T10:00:00',
+                    end: '2023-08-01T14:00:00',
+                  },
+                ]}
+              />
+            </div>
           </div>
-          <div className={styles.calendar}>
-            <FullCalendar
-              plugins={[timeGridPlugin, interactionPlugin]}
-              initialView="timeGridDay"
-              locales={[jaLocale]}
-              locale="ja"
-              headerToolbar={{
-                left: '',
-                center: '',
-                right: 'prev,next',
-              }}
-              events={[
-                {
-                  title: '要件定義書を作成',
-                  start: '2023-08-01T10:00:00',
-                  end: '2023-08-01T14:00:00',
-                },
-              ]}
-            />
-          </div>
-        </div>
-      </Container>
-    </Layout>
-    <Layout>
-      <Button variant="outline">キャンセル</Button>
-      <Button variant="fill">作成する</Button>
-    </Layout>
+        </Container>
+      </Layout>
+      <Layout>
+        <Button variant="outline">キャンセル</Button>
+        <Button variant="fill">作成する</Button>
+      </Layout>
+    </>
   )
 }

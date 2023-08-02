@@ -39,10 +39,10 @@ export const TicketsCard: React.FC<TicketsCardProps> = ({ ticket, onClick }) => 
                     <div className="text-[#636366]">{ticket.dueDate}</div>
                   </div>
                   <Chip
-                    label={ticket.genre.title}
+                    label={ticket.Genre.title}
                     size="small"
                     sx={{
-                      backgroundColor: ticket.genre.color,
+                      backgroundColor: ticket.Genre.color,
                     }}
                   />
                 </div>

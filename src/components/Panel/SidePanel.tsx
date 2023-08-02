@@ -42,9 +42,9 @@ export const SidePanel: React.FC<DrawerProps> = ({
           </div>
           {children}
         </div>
-        <Button variant="outline">キャンセル</Button>
-        <Button variant="fill">作成する</Button>
       </Drawer>
+      <Button variant="outline">キャンセル</Button>
+      <Button variant="fill">作成する</Button>
     </>
   )
 }

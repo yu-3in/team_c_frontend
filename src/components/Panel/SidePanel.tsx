@@ -44,10 +44,8 @@ export const SidePanel: React.FC<DrawerProps> = ({
           {children}
         </div>
       </Drawer>
-      <div style={display:'flex'}>
-        <Button variant="outline">キャンセル</Button>
-        <Button variant="fill">作成する</Button>
-      </div>
+      <Button variant="outline">キャンセル</Button>
+      <Button variant="fill">作成する</Button>
     </>
   )
 }

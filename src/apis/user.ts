@@ -1,20 +1,32 @@
 import apiClient from '../libs/apiClient'
 import { User } from '../types/user'
 
-export const signUp = (user: User) => {
-  return apiClient.post<User>('/signup', user).then((res) => {
-    return res.data
-  })
+export const signUp = (name: string, email: string, password: string) => {
+  return apiClient
+    .post<{ token: string }>('/signup', {
+      name,
+      email,
+      password,
+    })
+    .then((res) => {
+      localStorage.setItem('token', res.data.token)
+
+      return res.data
+    })
 }
 
 export const signIn = (email: string, password: string) => {
-  return apiClient.post<User>('/signin', { email, password }).then((res) => {
+  return apiClient.post<{ token: string }>('/login', { email, password }).then((res) => {
+    localStorage.setItem('token', res.data.token)
+
     return res.data
   })
 }
 
 export const signOut = () => {
-  return apiClient.post<User>('/signout').then((res) => {
+  return apiClient.post<User>('/logout').then((res) => {
+    localStorage.removeItem('token')
+
     return res.data
   })
 }
@@ -27,12 +39,6 @@ export const getUsers = () => {
 
 export const getUser = (id: number) => {
   return apiClient.get<User>(`/users/${id}`).then((res) => {
-    return res.data
-  })
-}
-
-export const updateUser = (user: User) => {
-  return apiClient.put<User>(`/users/${user.id}`, user).then((res) => {
     return res.data
   })
 }

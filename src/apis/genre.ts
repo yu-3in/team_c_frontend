@@ -13,14 +13,19 @@ export const getGenre = (id: number) => {
   })
 }
 
-export const createGenre = (genre: Genre) => {
-  return apiClient.post<Genre>(`/genres/${genre.id}`, genre).then((res) => {
+export type GenreRequest = {
+  title: string
+  color?: string
+}
+
+export const createGenre = (data: GenreRequest) => {
+  return apiClient.post<Genre>(`/genres`, data).then((res) => {
     return res.data
   })
 }
 
-export const updateGenre = (genre: Genre) => {
-  return apiClient.put<Genre>(`/genres/${genre.id}`, genre).then((res) => {
+export const updateGenre = (id: number, data: GenreRequest) => {
+  return apiClient.put<Genre>(`/genres/${id}`, data).then((res) => {
     return res.data
   })
 }

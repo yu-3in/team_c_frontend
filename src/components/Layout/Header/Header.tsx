@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { Navbar, Collapse } from '@material-tailwind/react'
 import { Button, IconButton } from '@mui/material'
 import { NavList } from './NavList'
@@ -6,6 +6,7 @@ import LogoutIcon from '@mui/icons-material/Logout'
 import MenuIcon from '@mui/icons-material/Menu'
 import CloseIcon from '@mui/icons-material/Close'
 import { useNavigate } from 'react-router-dom'
+import { signOut } from '../../../apis/user'
 
 export type HeaderProps = {
   //
@@ -14,6 +15,12 @@ export type HeaderProps = {
 export const Header: React.FC<HeaderProps> = () => {
   const [openNav, setOpenNav] = useState(false)
   const navigate = useNavigate()
+
+  const onLogout = useCallback(() => {
+    void signOut().then((_) => {
+      navigate('/login')
+    })
+  }, [])
 
   return (
     <header>
@@ -30,7 +37,7 @@ export const Header: React.FC<HeaderProps> = () => {
               {/* <Button variant="text" color="blue-gray">
                 ログイン
               </Button> */}
-              <IconButton>
+              <IconButton onClick={onLogout}>
                 <LogoutIcon />
               </IconButton>
             </div>

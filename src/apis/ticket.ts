@@ -25,14 +25,24 @@ export const getTicket = (id: number) => {
   })
 }
 
-export const createTicket = (ticket: Ticket) => {
-  return apiClient.post<Ticket>(`/tickets`, ticket).then((res) => {
+export type TicketRequest = {
+  title: string
+  status: string
+  dueDate?: string
+  startAt?: string
+  endAt?: string
+  description?: string
+  userId?: number
+  genreId: number
+}
+export const createTicket = (data: TicketRequest) => {
+  return apiClient.post<Ticket>(`/tickets`, data).then((res) => {
     return res.data
   })
 }
 
-export const updateTicket = (ticket: Ticket) => {
-  return apiClient.put<Ticket>(`/tickets/${ticket.id}`, ticket).then((res) => {
+export const updateTicket = (id: number, data: TicketRequest) => {
+  return apiClient.put<Ticket>(`/tickets/${id}`, data).then((res) => {
     return res.data
   })
 }

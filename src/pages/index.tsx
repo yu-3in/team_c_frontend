@@ -31,30 +31,20 @@ export const Home: React.FC = () => {
         <div className={styles.body}>
           <div className={styles.tickets}>
             <div className="flex flex-col items-center gap-4">
-              <div className="w-full">
-                <TicketList
-                  tickets={tickets?.filter((ticket) => ticket.status === 'doing') ?? []}
-                  status="doing"
-                  onClick={handleClickTicketCard}
-                  noItemOnClick={() => {
-                    setOpenCreateDrawer(true)
-                    setTargetStatus('doing')
-                  }}
-                  className="min-w-[350px]"
-                />
-              </div>
-              <div className="w-full">
-                <TicketList
-                  tickets={tickets?.filter((ticket) => ticket.status === 'todo') ?? []}
-                  status="todo"
-                  onClick={handleClickTicketCard}
-                  noItemOnClick={() => {
-                    setOpenCreateDrawer(true)
-                    setTargetStatus('todo')
-                  }}
-                  className="min-w-[350px]"
-                />
-              </div>
+              {['doing', 'todo', 'done'].map((status) => (
+                <div className="w-full" key={status}>
+                  <TicketList
+                    tickets={tickets?.filter((ticket) => ticket.status === status) ?? []}
+                    status={status as Status}
+                    onClick={handleClickTicketCard}
+                    noItemOnClick={() => {
+                      setOpenCreateDrawer(true)
+                      setTargetStatus(status as Status)
+                    }}
+                    className="min-w-[350px]"
+                  />
+                </div>
+              ))}
             </div>
             <SidePanel
               open={openEditDrawer}

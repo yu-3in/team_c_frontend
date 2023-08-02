@@ -35,5 +35,9 @@ export const Home: React.FC = () => {
         </form>
       </SidePanel>
     </Layout>
+    <Layout>
+      <Button variant="outline">キャンセル</Button>
+      <Button variant="fill">作成する</Button>
+    </Layout>
   )
 }

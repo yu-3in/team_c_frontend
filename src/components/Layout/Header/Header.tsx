@@ -29,13 +29,11 @@ export const Header: React.FC<HeaderProps> = () => {
           <h6
             className="mr-4 cursor-pointer py-1.5 text-inherit lg:ml-2"
             onClick={() => navigate('/')}>
-            Header
+            header
           </h6>
           <div className="flex">
-            <div className="hidden lg:block">
-              <NavList />
-            </div>
-            <div className="hidden gap-2 pl-2 lg:flex">
+            <NavList />
+            <div className="hidden gap-2 lg:flex">
               {/* <Button variant="text" color="blue-gray">
                 ログイン
               </Button> */}

@@ -1,5 +1,3 @@
-カレンダーのスタイルを修正
-
 .fc-event {
   background-color: #0074d9;
   color: #fff;
@@ -32,11 +30,39 @@ thead {
   padding: 6px;
   cursor: pointer;
 }
+.fc-timegrid-event-harness-inset .fc-timegrid-event {
+  box-shadow: rgba(0, 0, 0, 0.136) 2px 5px 14px 0px;
+}
 
 .fc .fc-toolbar.fc-header-toolbar {
-  margin-bottom: 10px;
+  margin-bottom: 16px;
 }
 
 .fc-scrollgrid, .fc-scrollgrid-liquid {
   gap: 10px;
+}
+
+/* ボタン */
+.fc .fc-button-primary  {
+  background: white;
+  border: 1px solid #D1D1D6;
+  color: #636366;
+}
+
+.fc .fc-button-primary:hover  {
+  background: white;
+  border: 1px solid #D1D1D6;
+  color: #8e8e95;
+}
+
+.fc .fc-button-primary:not(:disabled).fc-button-active {
+  background: white;
+  border: 1px solid #D1D1D6;
+  color: #636366;
+}
+
+.fc .fc-button-primary:not(:disabled).fc-button-active:hover {
+  background: white;
+  color: #8e8e95;
+  border: 1px solid #D1D1D6;
 }

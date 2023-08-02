@@ -21,7 +21,8 @@ export const Header: React.FC<HeaderProps> = () => {
         <div className="flex items-center justify-between text-blue-gray-900">
           <h6
             className="cursor-pointer py-1.5 text-inherit lg:ml-2 ml-0"
-            onClick={() => navigate('/')}>
+            onClick={() => navigate('/')}
+            style={h6Style}>
             Header
           </h6>
           <div className="flex">

@@ -11,13 +11,20 @@ export type TicketListProps = {
   color?: string
   status: Status
   onClick?: (ticket: Ticket) => void
+  noItemOnClick?: () => void
   className?: string
 }
 
-export const TicketList: React.FC<TicketListProps> = ({ tickets, status, onClick, className }) => {
+export const TicketList: React.FC<TicketListProps> = ({
+  tickets,
+  status,
+  onClick,
+  noItemOnClick,
+  className,
+}) => {
   return (
     <ul
-      className={classNames('min-w-[340px] list-none space-y-6 rounded-xl p-4', className)}
+      className={classNames('min-w-[400px] list-none space-y-6 rounded-xl p-4', className)}
       style={{ backgroundColor: statusConfig[status].color }}>
       <div className="flex items-center gap-3 pl-2">
         <div
@@ -36,7 +43,7 @@ export const TicketList: React.FC<TicketListProps> = ({ tickets, status, onClick
       ) : (
         <div className="font-weight flex flex-col items-center justify-center gap-4">
           <p>チケットがありません</p>
-          <Button variant="contained" color="info" startIcon={<AddIcon />}>
+          <Button variant="contained" color="info" startIcon={<AddIcon />} onClick={noItemOnClick}>
             作成する
           </Button>
         </div>

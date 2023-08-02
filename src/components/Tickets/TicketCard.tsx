@@ -20,12 +20,12 @@ export type TicketsCardProps = {
 
 export const TicketsCard: React.FC<TicketsCardProps> = ({ ticket, onClick }) => {
   return (
-    <div className="min-w-[300px] rounded-xl bg-white shadow">
+    <div className="relative min-w-[300px]  rounded-xl bg-white shadow">
       <CardActionArea onClick={() => onClick && onClick(ticket)}>
         <CardContent>
-          <div className="flex items-center justify-between">
-            <div className="space-y-1">
-              <div>
+          <div className="flex items-center justify-between gap-2">
+            <div className="max-w-[330px] space-y-1">
+              <div className="flex flex-col ">
                 <div className="flex items-center gap-2">
                   {StatusIcon[ticket.status]}
                   <div className="text-lg">{ticket.title}</div>
@@ -39,10 +39,10 @@ export const TicketsCard: React.FC<TicketsCardProps> = ({ ticket, onClick }) => 
                     <div className="text-[#636366]">{ticket.dueDate}</div>
                   </div>
                   <Chip
-                    label={ticket.Genre.title}
+                    label={ticket.Genre?.title}
                     size="small"
                     sx={{
-                      backgroundColor: ticket.Genre.color,
+                      backgroundColor: ticket.Genre?.color,
                     }}
                   />
                 </div>

@@ -207,7 +207,6 @@ export const TicketForm: React.FC<TicketFormProps> = ({
             name="userId"
             control={control}
             defaultValue={ticket?.User?.id}
-            rules={{ required: '担当者を選択してください' }}
             render={({ fieldState }) => (
               <Autocomplete
                 options={users?.map((user) => user.id) ?? []}

@@ -47,7 +47,7 @@ export const Tickets: React.FC = () => {
                       setOpenCreateDrawer(true)
                       setTargetStatus(status as Status)
                     }}
-                    className="min-h-[75vh] min-w-[400px]"
+                    className="h-[75vh] min-w-[400px] overflow-y-auto"
                   />
                 </div>
               ))}

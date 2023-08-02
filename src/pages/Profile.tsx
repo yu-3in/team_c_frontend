@@ -37,7 +37,7 @@ const Profile = () => {
                   <option value="サンプル1">絞り込み</option>
                 </select>
               </div>
-              <div className="w-full">{/* ここにグラフ */}</div>
+              <div className="w-full"></div>
               <div className="h-32 w-full rounded-md bg-[#F3E4FA]"></div>
             </div>
           </div>

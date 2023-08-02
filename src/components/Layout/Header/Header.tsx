@@ -18,7 +18,7 @@ export const Header: React.FC<HeaderProps> = () => {
   return (
     <header>
       <Navbar className="mx-auto my-2 max-w-[95%] px-4 py-2">
-        <div className="flex justify-start justify-between text-blue-gray-900">
+        <div className="flex justify-start text-blue-gray-900">
           <h6
             className="cursor-pointer py-1.5 text-inherit lg:ml-2 ml-0"
             onClick={() => navigate('/')}

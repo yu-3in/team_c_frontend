@@ -22,7 +22,7 @@ import { useQuery } from 'react-query'
 
 type FormData = {
   title: string
-  description?: string
+  description: string
   genreId: number
   status: string
   userId?: number
@@ -33,10 +33,11 @@ type FormData = {
 
 export type TicketFormProps = {
   ticket?: Ticket
+  onClose?: () => void
 }
 
-export const TicketForm: React.FC<TicketFormProps> = ({ ticket }) => {
-  const { control, handleSubmit, setValue } = useForm<FormData>()
+export const TicketForm: React.FC<TicketFormProps> = ({ ticket, onClose }) => {
+  const { control, handleSubmit, setValue, reset } = useForm<FormData>()
   const { data: users } = useQuery(['users'], getUsers)
   const { data: genres } = useQuery(['genres'], getGenres)
 
@@ -53,10 +54,16 @@ export const TicketForm: React.FC<TicketFormProps> = ({ ticket }) => {
     }
     if (ticket) {
       // update
-      void updateTicket(ticket.id, req).then((res) => console.log(res))
+      void updateTicket(ticket.id, req).then((_) => {
+        onClose && onClose()
+        reset()
+      })
     } else {
       // create
-      void createTicket(req).then((res) => console.log(res))
+      void createTicket(req).then((_) => {
+        onClose && onClose()
+        reset()
+      })
     }
   }, [])
 
@@ -108,12 +115,12 @@ export const TicketForm: React.FC<TicketFormProps> = ({ ticket }) => {
           <Controller
             name="genreId"
             control={control}
-            defaultValue={ticket?.Genre.id}
+            defaultValue={ticket?.Genre?.id}
             rules={{ required: 'ジャンルを選択してください' }}
             render={({ fieldState }) => (
               <Autocomplete
                 options={genres?.map((genre) => genre.id) ?? []}
-                defaultValue={ticket?.Genre.id}
+                defaultValue={ticket?.Genre?.id}
                 getOptionLabel={(option) =>
                   genres?.find((genre) => genre.id === option)?.title ?? ''
                 }
@@ -150,7 +157,7 @@ export const TicketForm: React.FC<TicketFormProps> = ({ ticket }) => {
           <Controller
             name="status"
             control={control}
-            defaultValue={ticket?.status}
+            defaultValue={ticket?.status ?? 'todo'}
             rules={{ required: 'ステータスを選択してください' }}
             render={({ field, fieldState }) => (
               <>
@@ -184,12 +191,12 @@ export const TicketForm: React.FC<TicketFormProps> = ({ ticket }) => {
           <Controller
             name="userId"
             control={control}
-            defaultValue={ticket?.User.id}
+            defaultValue={ticket?.User?.id}
             rules={{ required: '担当者を選択してください' }}
             render={({ fieldState }) => (
               <Autocomplete
                 options={users?.map((user) => user.id) ?? []}
-                defaultValue={ticket?.User.id}
+                defaultValue={ticket?.User?.id}
                 getOptionLabel={(option) => users?.find((user) => user.id === option)?.name ?? ''}
                 renderInput={(params) => (
                   <TextField
@@ -225,9 +232,11 @@ export const TicketForm: React.FC<TicketFormProps> = ({ ticket }) => {
             defaultValue={ticket?.dueDate ? dayjs(ticket.dueDate) : undefined}
             rules={{
               validate: (value) => {
-                const formatDate = value ? value.toISOString() : null
-                if (value === null || dayjs(formatDate).isValid()) {
-                  return '日付形式が間違っています'
+                if (value) {
+                  const formatDate = value ? value.toISOString() : null
+                  if (!dayjs(formatDate).isValid()) {
+                    return '日付形式が間違っています'
+                  }
                 }
               },
             }}
@@ -263,9 +272,11 @@ export const TicketForm: React.FC<TicketFormProps> = ({ ticket }) => {
               defaultValue={dayjs(ticket?.startAt)}
               rules={{
                 validate: (value) => {
-                  const formatDate = value ? value.toISOString() : null
-                  if (value === null || dayjs(formatDate).isValid()) {
-                    return '日付形式が間違っています'
+                  if (value) {
+                    const formatDate = value ? value.toISOString() : null
+                    if (!dayjs(formatDate).isValid()) {
+                      return '日付形式が間違っています'
+                    }
                   }
                 },
               }}
@@ -294,9 +305,11 @@ export const TicketForm: React.FC<TicketFormProps> = ({ ticket }) => {
               defaultValue={ticket?.endAt ? dayjs(ticket.endAt) : undefined}
               rules={{
                 validate: (value) => {
-                  const formatDate = value ? value.toISOString() : null
-                  if (value === null || dayjs(formatDate).isValid()) {
-                    return '日付形式が間違っています'
+                  if (value) {
+                    const formatDate = value ? value.toISOString() : null
+                    if (!dayjs(formatDate).isValid()) {
+                      return '日付形式が間違っています'
+                    }
                   }
                 },
               }}

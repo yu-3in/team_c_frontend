@@ -6,7 +6,7 @@ import { useState, useCallback } from 'react'
 import { SidePanel } from '../components/Panel/SidePanel'
 import { TicketForm } from '../components/Tickets/TicketForm'
 import { useQuery } from 'react-query'
-import { getTickets } from '../apis/ticket'
+import { deleteTicket, getTickets } from '../apis/ticket'
 import { Status } from '../types/status'
 import AddIcon from '@mui/icons-material/Add'
 
@@ -42,6 +42,7 @@ export const Tickets: React.FC = () => {
                     tickets={tickets?.filter((ticket) => ticket.status === status) ?? []}
                     status={status as Status}
                     onClick={handleClickTicketCard}
+                    noItemOnClick={() => setOpenCreateDrawer(true)}
                     className="min-h-[75vh]"
                   />
                 </div>
@@ -51,14 +52,20 @@ export const Tickets: React.FC = () => {
           <SidePanel
             open={openEditDrawer}
             title="チケットを編集する"
-            onClose={() => setOpenEditDrawer(false)}>
-            <TicketForm ticket={clickedTicket} />
+            onClose={() => setOpenEditDrawer(false)}
+            onDelete={() => {
+              if (clickedTicket) {
+                void deleteTicket(clickedTicket.id.toString())
+              }
+              setOpenEditDrawer(false)
+            }}>
+            <TicketForm ticket={clickedTicket} onClose={() => setOpenCreateDrawer(false)} />
           </SidePanel>
           <SidePanel
             open={openCreateDrawer}
             title="チケットを作成する"
             onClose={() => setOpenCreateDrawer(false)}>
-            <TicketForm />
+            <TicketForm onClose={() => setOpenCreateDrawer(false)} />
           </SidePanel>
         </div>
       </Container>

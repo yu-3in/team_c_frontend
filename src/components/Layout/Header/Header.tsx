@@ -25,9 +25,7 @@ export const Header: React.FC<HeaderProps> = () => {
             Header
           </h6>
           <div className="flex">
-            <div className="hidden lg:block">
-              <NavList />
-            </div>
+            <NavList />
             <div className="hidden gap-2 lg:flex">
               {/* <Button variant="text" color="blue-gray">
                 ログイン

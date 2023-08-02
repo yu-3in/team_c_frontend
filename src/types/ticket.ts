@@ -9,8 +9,8 @@ export type Ticket = {
   dueDate: string
   startAt: string
   endAt: string
-  user: User
-  genre: Genre
+  User: User
+  Genre: Genre
   createdAt: string
   updatedAt: string
 }

@@ -11,55 +11,14 @@ import { Ticket } from '../../types/ticket'
 import { DatePicker, DateTimePicker } from '@mui/x-date-pickers'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { useCallback } from 'react'
+import dayjs from 'dayjs'
 import { renderTimeViewClock } from '@mui/x-date-pickers/timeViewRenderers'
 import { statusConfig } from '../../configs/status'
 import SearchIcon from '@mui/icons-material/Search'
-
-const genres = [
-  {
-    id: 1,
-    title: 'ジャンル1',
-  },
-  {
-    id: 2,
-    title: 'ジャンル2',
-  },
-  {
-    id: 3,
-    title: 'ジャンル3',
-  },
-  {
-    id: 4,
-    title: 'ジャンル4',
-  },
-  {
-    id: 5,
-    title: 'ジャンル5',
-  },
-]
-
-const users = [
-  {
-    id: 1,
-    name: 'ユーザー1',
-  },
-  {
-    id: 2,
-    name: 'ユーザー2',
-  },
-  {
-    id: 3,
-    name: 'ユーザー3',
-  },
-  {
-    id: 4,
-    name: 'ユーザー4',
-  },
-  {
-    id: 5,
-    name: 'ユーザー5',
-  },
-]
+import { TicketRequest, createTicket, updateTicket } from '../../apis/ticket'
+import { getUsers } from '../../apis/user'
+import { getGenres } from '../../apis/genre'
+import { useQuery } from 'react-query'
 
 type FormData = {
   title: string
@@ -67,9 +26,9 @@ type FormData = {
   genreId: number
   status: string
   userId?: number
-  dueDate?: string
-  startAt?: string
-  endAt?: string
+  dueDate?: dayjs.Dayjs
+  startAt?: dayjs.Dayjs
+  endAt?: dayjs.Dayjs
 }
 
 export type TicketFormProps = {
@@ -77,23 +36,27 @@ export type TicketFormProps = {
 }
 
 export const TicketForm: React.FC<TicketFormProps> = ({ ticket }) => {
-  const { control, handleSubmit } = useForm<FormData>()
+  const { control, handleSubmit, setValue } = useForm<FormData>()
+  const { data: users } = useQuery(['users'], getUsers)
+  const { data: genres } = useQuery(['genres'], getGenres)
 
-  const onSubmit: SubmitHandler<FormData> = useCallback((_) => {
+  const onSubmit: SubmitHandler<FormData> = useCallback((data) => {
+    const req: TicketRequest = {
+      title: data.title,
+      description: data.description,
+      genreId: data.genreId,
+      status: data.status,
+      userId: data.userId,
+      dueDate: dayjs(data.dueDate).toISOString(),
+      startAt: dayjs(data.startAt).toISOString(),
+      endAt: dayjs(data.endAt).toISOString(),
+    }
     if (ticket) {
       // update
-      // const req: TicketRequest = {
-      //   title: data.title,
-      //   description: data.description,
-      //   genreId: data.genreId,
-      //   status: data.status,
-      //   userId: data.userId,
-      //   dueDate: dayjs(data.dueDate).format('YYYY/MM/DD:HH:mm'),
-      //   startAt: dayjs(data.startAt).format('YYYY/MM/DD'),
-      //   endAt: dayjs(data.endAt).format('YYYY/MM/DD'),
-      // }
+      void updateTicket(ticket.id, req).then((res) => console.log(res))
     } else {
       // create
+      void createTicket(req).then((res) => console.log(res))
     }
   }, [])
 
@@ -145,14 +108,14 @@ export const TicketForm: React.FC<TicketFormProps> = ({ ticket }) => {
           <Controller
             name="genreId"
             control={control}
-            defaultValue={ticket?.genre.id}
+            defaultValue={ticket?.Genre.id}
             rules={{ required: 'ジャンルを選択してください' }}
             render={({ fieldState }) => (
               <Autocomplete
-                options={genres.map((genre) => genre.id)}
-                defaultValue={ticket?.genre.id}
+                options={genres?.map((genre) => genre.id) ?? []}
+                defaultValue={ticket?.Genre.id}
                 getOptionLabel={(option) =>
-                  genres.find((genre) => genre.id === option)?.title ?? ''
+                  genres?.find((genre) => genre.id === option)?.title ?? ''
                 }
                 renderInput={(params) => (
                   <TextField
@@ -170,12 +133,14 @@ export const TicketForm: React.FC<TicketFormProps> = ({ ticket }) => {
                     helperText={fieldState.error?.message}
                   />
                 )}
-                // onChange={(_, value) =>
-                // setValue('genreId', value, {
-                //   shouldValidate: true,
-                //   shouldDirty: true,
-                // })
-                // }
+                onChange={(_, value) => {
+                  if (value) {
+                    setValue('genreId', value ?? undefined, {
+                      shouldValidate: true,
+                      shouldDirty: true,
+                    })
+                  }
+                }}
               />
             )}
           />
@@ -193,13 +158,12 @@ export const TicketForm: React.FC<TicketFormProps> = ({ ticket }) => {
                   // eslint-disable-next-line react/jsx-props-no-spreading
                   {...field}
                   error={!!fieldState.error}
-                  // onChange={(_, value) =>
-                  //   setValue('status', value, {
-                  //     shouldValidate: true,
-                  //     shouldDirty: true,
-                  //   })
-                  // }
-                >
+                  onChange={(event) => {
+                    setValue('status', event.target.value, {
+                      shouldValidate: true,
+                      shouldDirty: true,
+                    })
+                  }}>
                   {Object.entries(statusConfig).map(([key, value]) => (
                     <MenuItem key={key} value={key} defaultChecked={ticket?.status === key}>
                       {value.title}
@@ -220,13 +184,13 @@ export const TicketForm: React.FC<TicketFormProps> = ({ ticket }) => {
           <Controller
             name="userId"
             control={control}
-            defaultValue={ticket?.user.id}
+            defaultValue={ticket?.User.id}
             rules={{ required: '担当者を選択してください' }}
             render={({ fieldState }) => (
               <Autocomplete
-                options={users.map((user) => user.id)}
-                defaultValue={ticket?.user.id}
-                getOptionLabel={(option) => users.find((user) => user.id === option)?.name ?? ''}
+                options={users?.map((user) => user.id) ?? []}
+                defaultValue={ticket?.User.id}
+                getOptionLabel={(option) => users?.find((user) => user.id === option)?.name ?? ''}
                 renderInput={(params) => (
                   <TextField
                     // eslint-disable-next-line react/jsx-props-no-spreading
@@ -243,12 +207,12 @@ export const TicketForm: React.FC<TicketFormProps> = ({ ticket }) => {
                     helperText={fieldState.error?.message}
                   />
                 )}
-                // onChange={(_, value) =>
-                // setValue('user', value, {
-                //   shouldValidate: true,
-                //   shouldDirty: true,
-                // })
-                // }
+                onChange={(_, value) =>
+                  setValue('userId', value ?? undefined, {
+                    shouldValidate: true,
+                    shouldDirty: true,
+                  })
+                }
               />
             )}
           />
@@ -258,15 +222,15 @@ export const TicketForm: React.FC<TicketFormProps> = ({ ticket }) => {
           <Controller
             name="dueDate"
             control={control}
-            // defaultValue={dayjs(ticket?.dueDate)}
-            // rules={{
-            //   validate: (value: string) => {
-            //     const formatDate = dayjs(value).format('YYYY/MM/DD:HH:mm')
-            //     if (!dayjs(formatDate).isValid()) {
-            //       return '日付形式が間違っています'
-            //     }
-            //   },
-            // }}
+            defaultValue={ticket?.dueDate ? dayjs(ticket.dueDate) : undefined}
+            rules={{
+              validate: (value) => {
+                const formatDate = value ? value.toISOString() : null
+                if (value === null || dayjs(formatDate).isValid()) {
+                  return '日付形式が間違っています'
+                }
+              },
+            }}
             render={({ field, fieldState }) => (
               <>
                 <DateTimePicker
@@ -296,15 +260,15 @@ export const TicketForm: React.FC<TicketFormProps> = ({ ticket }) => {
             <Controller
               name="startAt"
               control={control}
-              // defaultValue={dayjs(ticket?.startAt)}
-              // rules={{
-              //   validate: (value: string) => {
-              //     const formatDate = dayjs(value).format('YYYY/MM/DD')
-              //     if (!dayjs(formatDate).isValid()) {
-              //       return '日付形式が間違っています'
-              //     }
-              //   },
-              // }}
+              defaultValue={dayjs(ticket?.startAt)}
+              rules={{
+                validate: (value) => {
+                  const formatDate = value ? value.toISOString() : null
+                  if (value === null || dayjs(formatDate).isValid()) {
+                    return '日付形式が間違っています'
+                  }
+                },
+              }}
               render={({ field, fieldState }) => (
                 <>
                   <DatePicker
@@ -327,15 +291,15 @@ export const TicketForm: React.FC<TicketFormProps> = ({ ticket }) => {
             <Controller
               name="endAt"
               control={control}
-              // defaultValue={dayjs(ticket?.endAt)}
-              // rules={{
-              //   validate: (value: string) => {
-              //     const formatDate = dayjs(value).format('YYYY/MM/DD')
-              //     if (!dayjs(formatDate).isValid()) {
-              //       return '日付形式が間違っています'
-              //     }
-              //   },
-              // }}
+              defaultValue={ticket?.endAt ? dayjs(ticket.endAt) : undefined}
+              rules={{
+                validate: (value) => {
+                  const formatDate = value ? value.toISOString() : null
+                  if (value === null || dayjs(formatDate).isValid()) {
+                    return '日付形式が間違っています'
+                  }
+                },
+              }}
               render={({ field, fieldState }) => (
                 <>
                   <DatePicker

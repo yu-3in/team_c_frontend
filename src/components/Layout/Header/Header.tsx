@@ -32,7 +32,9 @@ export const Header: React.FC<HeaderProps> = () => {
             header
           </h6>
           <div className="flex">
-            <NavList />
+            <div className="hidden lg:block">
+              <NavList />
+            </div>
             <div className="hidden gap-2 lg:flex">
               {/* <Button variant="text" color="blue-gray">
                 ログイン

@@ -7,6 +7,8 @@
 .calendar {
   flex-basis: 70%;
   padding: 16px;
+  background-color: white;
+  border-radius: 6px;
 }
 
 .tickets {

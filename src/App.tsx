@@ -6,6 +6,8 @@ import Profile from './pages/Profile'
 import { LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import ja from 'dayjs/locale/ja'
+import Login from './pages/Login'
+import SignIn from './pages/SignIn'
 
 const App = () => {
   console.log(ja.name)
@@ -18,6 +20,8 @@ const App = () => {
           <Route path="/calendar" element={<Calendar />} />
           <Route path="tickets" element={<Tickets />} />
           <Route path="profile" element={<Profile />} />
+          <Route path="login" element={<Login />} />
+          <Route path="signin" element={<SignIn />} />
         </Routes>
       </LocalizationProvider>
     </BrowserRouter>

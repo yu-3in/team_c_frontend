@@ -14,8 +14,6 @@ const Profile = () => {
     { name: 'バックエンド', score: 60 },
   ]
 
-  // 絞り込み関数
-
   // Highchartsのオプション設定
   const options = {
     chart: {

@@ -1,7 +1,6 @@
-import { Button } from '../components/Button/Button'
 import { Layout } from '../components/Layout/Layout'
 import { SidePanel } from '../components/Panel/SidePanel'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import FullCalendar from '@fullcalendar/react'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
@@ -11,6 +10,7 @@ import { Container } from '@mui/material'
 import { TicketList } from '../components/Tickets/TicketList'
 import { Ticket } from '../types/ticket'
 import { TicketForm } from '../components/Tickets/TicketForm'
+import { getGenres } from '../apis/genre'
 
 const tickets: Ticket[] = [
   {
@@ -145,6 +145,12 @@ export const Home: React.FC = () => {
   const handleClickTicketCard = useCallback((ticket: Ticket) => {
     setOpenDrawer(true)
     setClickedTicket(ticket)
+  }, [])
+
+  useEffect(() => {
+    void getGenres()
+      .then((res) => console.log(res))
+      .then((err) => console.log(err))
   }, [])
 
   return (

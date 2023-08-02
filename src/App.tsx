@@ -8,8 +8,6 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import ja from 'dayjs/locale/ja'
 
 const App = () => {
-  console.log(ja.name)
-
   return (
     <BrowserRouter>
       <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={ja.name}>

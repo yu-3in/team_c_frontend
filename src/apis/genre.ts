@@ -2,9 +2,14 @@ import apiClient from '../libs/apiClient'
 import { Genre } from '../types/genre'
 
 export const getGenres = () => {
-  return apiClient.get<Genre[]>('/genres').then((res) => {
-    return res.data
-  })
+  return apiClient
+    .get<Genre[]>('/genres')
+    .then((res) => {
+      return res.data
+    })
+    .catch((err) => {
+      console.log(err)
+    })
 }
 
 export const getGenre = (id: number) => {

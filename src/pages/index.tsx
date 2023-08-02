@@ -11,11 +11,13 @@ import { Ticket } from '../types/ticket'
 import { TicketForm } from '../components/Tickets/TicketForm'
 import { useQuery } from 'react-query'
 import { deleteTicket, getTickets } from '../apis/ticket'
+import { Status } from '../types/status'
 
 export const Home: React.FC = () => {
   const [openCreateDrawer, setOpenCreateDrawer] = useState(false)
   const [openEditDrawer, setOpenEditDrawer] = useState(false)
   const [clickedTicket, setClickedTicket] = useState<Ticket>()
+  const [targetStatus, setTargetStatus] = useState<Status>()
   const { data: tickets } = useQuery(['tickets'], () => getTickets())
 
   const handleClickTicketCard = useCallback((ticket: Ticket) => {
@@ -34,7 +36,11 @@ export const Home: React.FC = () => {
                   tickets={tickets?.filter((ticket) => ticket.status === 'doing') ?? []}
                   status="doing"
                   onClick={handleClickTicketCard}
-                  noItemOnClick={() => setOpenCreateDrawer(true)}
+                  noItemOnClick={() => {
+                    setOpenCreateDrawer(true)
+                    setTargetStatus('doing')
+                  }}
+                  className="min-w-[300px]"
                 />
               </div>
               <div className="w-full">
@@ -42,7 +48,10 @@ export const Home: React.FC = () => {
                   tickets={tickets?.filter((ticket) => ticket.status === 'todo') ?? []}
                   status="todo"
                   onClick={handleClickTicketCard}
-                  noItemOnClick={() => setOpenCreateDrawer(true)}
+                  noItemOnClick={() => {
+                    setOpenCreateDrawer(true)
+                    setTargetStatus('todo')
+                  }}
                 />
               </div>
             </div>
@@ -62,7 +71,7 @@ export const Home: React.FC = () => {
               open={openCreateDrawer}
               title="チケットを作成する"
               onClose={() => setOpenCreateDrawer(false)}>
-              <TicketForm onClose={() => setOpenCreateDrawer(false)} />
+              <TicketForm onClose={() => setOpenCreateDrawer(false)} defaultStatus={targetStatus} />
             </SidePanel>
           </div>
 

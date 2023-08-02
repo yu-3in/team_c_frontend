@@ -19,6 +19,7 @@ import { TicketRequest, createTicket, updateTicket } from '../../apis/ticket'
 import { getUsers } from '../../apis/user'
 import { getGenres } from '../../apis/genre'
 import { useQuery } from 'react-query'
+import { Status } from '../../types/status'
 
 type FormData = {
   title: string
@@ -33,10 +34,15 @@ type FormData = {
 
 export type TicketFormProps = {
   ticket?: Ticket
+  defaultStatus?: Status
   onClose?: () => void
 }
 
-export const TicketForm: React.FC<TicketFormProps> = ({ ticket, onClose }) => {
+export const TicketForm: React.FC<TicketFormProps> = ({
+  ticket,
+  defaultStatus = 'todo',
+  onClose,
+}) => {
   const { control, handleSubmit, setValue, reset } = useForm<FormData>()
   const { data: users } = useQuery(['users'], getUsers)
   const { data: genres } = useQuery(['genres'], getGenres)
@@ -157,7 +163,7 @@ export const TicketForm: React.FC<TicketFormProps> = ({ ticket, onClose }) => {
           <Controller
             name="status"
             control={control}
-            defaultValue={ticket?.status ?? 'todo'}
+            defaultValue={ticket?.status ?? defaultStatus}
             rules={{ required: 'ステータスを選択してください' }}
             render={({ field, fieldState }) => (
               <>

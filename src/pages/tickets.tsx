@@ -14,6 +14,7 @@ export const Tickets: React.FC = () => {
   const [openCreateDrawer, setOpenCreateDrawer] = useState(false)
   const [openEditDrawer, setOpenEditDrawer] = useState(false)
   const [clickedTicket, setClickedTicket] = useState<Ticket>()
+  const [targetStatus, setTargetStatus] = useState<Status>()
   const { data: tickets } = useQuery(['tickets'], () => getTickets())
 
   const handleClickTicketCard = useCallback((ticket: Ticket) => {
@@ -42,8 +43,11 @@ export const Tickets: React.FC = () => {
                     tickets={tickets?.filter((ticket) => ticket.status === status) ?? []}
                     status={status as Status}
                     onClick={handleClickTicketCard}
-                    noItemOnClick={() => setOpenCreateDrawer(true)}
-                    className="min-h-[75vh]"
+                    noItemOnClick={() => {
+                      setOpenCreateDrawer(true)
+                      setTargetStatus(status as Status)
+                    }}
+                    className="min-h-[75vh] min-w-[400px]"
                   />
                 </div>
               ))}
@@ -65,7 +69,7 @@ export const Tickets: React.FC = () => {
             open={openCreateDrawer}
             title="チケットを作成する"
             onClose={() => setOpenCreateDrawer(false)}>
-            <TicketForm onClose={() => setOpenCreateDrawer(false)} />
+            <TicketForm onClose={() => setOpenCreateDrawer(false)} defaultStatus={targetStatus} />
           </SidePanel>
         </div>
       </Container>

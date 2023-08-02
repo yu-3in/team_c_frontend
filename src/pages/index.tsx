@@ -1,4 +1,4 @@
-// import { Button } from '../components/Button/Button'
+import { Button } from '../components/Button/Button'
 import { Layout } from '../components/Layout/Layout'
 import { SidePanel } from '../components/Panel/SidePanel'
 import { useCallback, useState } from 'react'
@@ -189,6 +189,10 @@ export const Home: React.FC = () => {
           </div>
         </div>
       </Container>
+    </Layout>
+    <Layout>
+      <Button variant="outline">キャンセル</Button>
+      <Button variant="fill">作成する</Button>
     </Layout>
   )
 }

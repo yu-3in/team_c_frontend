@@ -47,7 +47,7 @@ export const updateTicket = (id: number, data: TicketRequest) => {
   })
 }
 
-export const deleteTicket = (id: string) => {
+export const deleteTicket = (id: number) => {
   return apiClient.delete<Ticket>(`/tickets/${id}`).then((res) => {
     return res.data
   })

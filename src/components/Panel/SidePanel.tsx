@@ -5,7 +5,7 @@ type DrawerProps = {
   open: boolean
   title: string
   onClose: () => void
-  onDelete?: () => void
+  onDelete?: () => Promise<void>
   placement?: 'left' | 'right'
   children: React.ReactNode
 }
@@ -43,6 +43,7 @@ export const SidePanel: React.FC<DrawerProps> = ({
             <h3 className="my-4 text-2xl font-bold text-gray-800">{title}</h3>
           </div>
           {onDelete && (
+            // eslint-disable-next-line @typescript-eslint/no-misused-promises
             <Button variant="outlined" color="error" onClick={onDelete}>
               削除する
             </Button>

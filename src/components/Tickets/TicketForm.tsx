@@ -15,7 +15,7 @@ import dayjs from 'dayjs'
 import { renderTimeViewClock } from '@mui/x-date-pickers/timeViewRenderers'
 import { statusConfig } from '../../configs/status'
 import SearchIcon from '@mui/icons-material/Search'
-import { TicketRequest, createTicket, updateTicket } from '../../apis/ticket'
+import { TicketRequest, createTicket, getTickets, updateTicket } from '../../apis/ticket'
 import { getUsers } from '../../apis/user'
 import { getGenres } from '../../apis/genre'
 import { useQuery } from 'react-query'
@@ -46,6 +46,9 @@ export const TicketForm: React.FC<TicketFormProps> = ({
   const { control, handleSubmit, setValue, reset } = useForm<FormData>()
   const { data: users } = useQuery(['users'], getUsers)
   const { data: genres } = useQuery(['genres'], getGenres)
+  const { refetch } = useQuery(['tickets'], () => getTickets(), {
+    enabled: false, // 初回レンダリング時にはAPIを叩かない
+  })
 
   const onSubmit: SubmitHandler<FormData> = useCallback((data) => {
     const req: TicketRequest = {
@@ -61,15 +64,21 @@ export const TicketForm: React.FC<TicketFormProps> = ({
     if (ticket) {
       // update
       void updateTicket(ticket.id, req).then((_) => {
+        void refetch()
         onClose && onClose()
         reset()
       })
     } else {
       // create
-      void createTicket(req).then((_) => {
-        onClose && onClose()
-        reset()
-      })
+      createTicket(req)
+        .then((_) => {
+          void refetch()
+          onClose && onClose()
+          reset()
+        })
+        .catch((_) => {
+          return
+        })
     }
   }, [])
 

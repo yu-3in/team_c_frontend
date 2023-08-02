@@ -18,7 +18,7 @@ export const Home: React.FC = () => {
   const [openEditDrawer, setOpenEditDrawer] = useState(false)
   const [clickedTicket, setClickedTicket] = useState<Ticket>()
   const [targetStatus, setTargetStatus] = useState<Status>()
-  const { data: tickets } = useQuery(['tickets'], () => getTickets())
+  const { data: tickets, refetch: refetchTickets } = useQuery(['tickets'], () => getTickets())
 
   const handleClickTicketCard = useCallback((ticket: Ticket) => {
     setOpenEditDrawer(true)
@@ -59,9 +59,11 @@ export const Home: React.FC = () => {
               open={openEditDrawer}
               title="チケットを編集する"
               onClose={() => setOpenEditDrawer(false)}
-              onDelete={() => {
+              // eslint-disable-next-line @typescript-eslint/no-misused-promises
+              onDelete={async () => {
                 if (clickedTicket) {
-                  void deleteTicket(clickedTicket.id.toString())
+                  await deleteTicket(clickedTicket.id)
+                  void refetchTickets()
                 }
                 setOpenEditDrawer(false)
               }}>

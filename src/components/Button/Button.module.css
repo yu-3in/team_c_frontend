@@ -1,4 +1,4 @@
-.button{
+.button_fill{
     font-size:14px;
     font-weight:bold;
     width:120px;
@@ -9,10 +9,10 @@
     border:solid 2px #000000;
     cursor: pointer;
 }
-.button:hover{
+.button_fill:hover{
     background-color:#00000055;
 }
-.button{
+.button_outline{
     font-size:14px;
     font-weight:bold;
     background-color:#FFFFFF;
@@ -20,6 +20,6 @@
     border:solid 2px #000000;
     cursor: pointer;
 }
-.button:hover{
+.button_outline:hover{
     background-color:#BBBBBB;
 }

@@ -16,17 +16,7 @@ import { renderTimeViewClock } from '@mui/x-date-pickers/timeViewRenderers'
 import { statusConfig } from '../../configs/status'
 import SearchIcon from '@mui/icons-material/Search'
 
-type GenreOption = {
-  id: number
-  title: string
-}
-
-type UserOption = {
-  id: number
-  name: string
-}
-
-const genres: GenreOption[] = [
+const genres = [
   {
     id: 1,
     title: 'ジャンル1',
@@ -49,7 +39,7 @@ const genres: GenreOption[] = [
   },
 ]
 
-const users: UserOption[] = [
+const users = [
   {
     id: 1,
     name: 'ユーザー1',
@@ -131,14 +121,14 @@ export const TicketForm: React.FC<TicketFormProps> = ({ ticket }) => {
           <Controller
             name="genre"
             control={control}
-            defaultValue={ticket?.genre.title}
+            defaultValue={ticket?.genre.id.toString()}
             rules={{ required: 'ジャンルを選択してください' }}
             render={({ fieldState }) => (
               <Autocomplete
-                options={genres}
-                defaultValue={ticket?.genre}
-                getOptionLabel={(option: GenreOption | string) =>
-                  typeof option === 'string' ? option : option.title
+                options={genres.map((genre) => genre.id.toString())}
+                defaultValue={ticket?.genre.id.toString()}
+                getOptionLabel={(option) =>
+                  genres.find((genre) => genre.id.toString() === option)?.title ?? ''
                 }
                 renderInput={(params) => (
                   <TextField
@@ -205,20 +195,21 @@ export const TicketForm: React.FC<TicketFormProps> = ({ ticket }) => {
           <Controller
             name="user"
             control={control}
-            defaultValue={ticket?.user}
+            defaultValue={ticket?.user.id.toString()}
             rules={{ required: '担当者を選択してください' }}
             render={({ fieldState }) => (
               <Autocomplete
-                options={users}
-                defaultValue={ticket?.user.name}
-                getOptionLabel={(option: UserOption | string) =>
-                  typeof option === 'string' ? option : option.name
+                options={users.map((user) => user.id.toString())}
+                defaultValue={ticket?.user.id.toString()}
+                getOptionLabel={(option) =>
+                  users.find((user) => user.id.toString() === option)?.name ?? ''
                 }
                 renderInput={(params) => (
                   <TextField
                     // eslint-disable-next-line react/jsx-props-no-spreading
                     {...params}
                     InputProps={{
+                      ...params.InputProps,
                       startAdornment: (
                         <InputAdornment position="start">
                           <SearchIcon />

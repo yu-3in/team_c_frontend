@@ -14,7 +14,7 @@ export const getGenre = (id: number) => {
 }
 
 export const createGenre = (genre: Genre) => {
-  return apiClient.post<Genre>(`/genres/${genre.id}`, genre).then((res) => {
+  return apiClient.post<Genre>(`/genres/`, genre).then((res) => {
     return res.data
   })
 }

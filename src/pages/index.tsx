@@ -2,8 +2,6 @@
 import { Layout } from '../components/Layout/Layout'
 import { SidePanel } from '../components/Panel/SidePanel'
 import { useCallback, useState } from 'react'
-import { IconButton, Input, Textarea, Typography } from '@material-tailwind/react'
-
 import FullCalendar from '@fullcalendar/react'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
@@ -12,6 +10,7 @@ import styles from '../styles/home.module.css'
 import { Container } from '@mui/material'
 import { TicketList } from '../components/Tickets/TicketList'
 import { Ticket } from '../types/ticket'
+import { TicketForm } from '../components/Tickets/TicketForm'
 
 const tickets: Ticket[] = [
   {
@@ -141,15 +140,33 @@ const tickets: Ticket[] = [
 
 export const Home: React.FC = () => {
   const [openDrawer, setOpenDrawer] = useState(false)
+  const [clickedTicket, setClickedTicket] = useState<Ticket>()
 
-  const handleClickTicketCard = useCallback(() => {
+  const handleClickTicketCard = useCallback((ticket: Ticket) => {
     setOpenDrawer(true)
+    setClickedTicket(ticket)
   }, [])
 
   return (
     <Layout>
       <Container maxWidth="xl">
         <div className={styles.body}>
+          <div className={styles.tickets}>
+            <div className="flex flex-col items-center gap-4">
+              <div className="w-full">
+                <TicketList tickets={tickets} status="doing" onClick={handleClickTicketCard} />
+              </div>
+              <div className="w-full">
+                <TicketList tickets={tickets} status="todo" onClick={handleClickTicketCard} />
+              </div>
+            </div>
+            <SidePanel
+              open={openDrawer}
+              title="チケットを編集する"
+              onClose={() => setOpenDrawer(false)}>
+              <TicketForm ticket={clickedTicket} />
+            </SidePanel>
+          </div>
           <div className={styles.calendar}>
             <FullCalendar
               plugins={[timeGridPlugin, interactionPlugin]}
@@ -169,41 +186,6 @@ export const Home: React.FC = () => {
                 },
               ]}
             />
-          </div>
-          <div className={styles.tickets}>
-            <div className="flex flex-col items-center gap-4">
-              <div className="w-full">
-                <TicketList tickets={tickets} status="doing" onClick={handleClickTicketCard} />
-              </div>
-              <div className="w-full">
-                <TicketList tickets={tickets} status="todo" onClick={handleClickTicketCard} />
-              </div>
-            </div>
-
-            <SidePanel open={openDrawer} onClose={() => setOpenDrawer(false)}>
-              <div className="mb-2 flex items-center justify-between p-4">
-                <Typography variant="h5" color="blue-gray">
-                  Contact Us
-                </Typography>
-                <IconButton variant="text" color="blue-gray" onClick={() => setOpenDrawer(false)}>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={2}
-                    stroke="currentColor"
-                    className="h-5 w-5">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </IconButton>
-              </div>
-              <form className="flex flex-col gap-6 p-4">
-                <Input type="email" label="Email" />
-                <Input label="Subject" />
-                <Textarea rows={6} label="Message" />
-                <button>Send Message</button>
-              </form>
-            </SidePanel>
           </div>
         </div>
       </Container>

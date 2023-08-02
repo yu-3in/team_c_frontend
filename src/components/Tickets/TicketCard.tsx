@@ -15,13 +15,13 @@ const StatusIcon: {
 
 export type TicketsCardProps = {
   ticket: Ticket
-  onClick?: () => void
+  onClick?: (ticket: Ticket) => void
 }
 
 export const TicketsCard: React.FC<TicketsCardProps> = ({ ticket, onClick }) => {
   return (
     <div className="min-w-[300px] rounded-xl bg-white shadow">
-      <CardActionArea onClick={onClick}>
+      <CardActionArea onClick={() => onClick && onClick(ticket)}>
         <CardContent>
           <div className="flex items-center justify-between">
             <div className="space-y-1">

@@ -21,7 +21,6 @@ apiClient.interceptors.response.use(
   (error: AxiosError) => {
     if (error.response && error.response.status === 401) {
       localStorage.removeItem('token')
-      location.href = '/signin'
     }
 
     return Promise.reject(error)

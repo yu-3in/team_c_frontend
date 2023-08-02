@@ -1,9 +1,9 @@
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
 import { Layout } from '../components/Layout/Layout'
-import { TextField, Button } from '@mui/material'
+import { TextField, Button, Snackbar, Alert } from '@mui/material'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { signUp } from '../apis/user'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 type FormData = {
   name: string
@@ -13,11 +13,15 @@ type FormData = {
 
 const SignUp = () => {
   const { control, handleSubmit } = useForm<FormData>()
+  const navigate = useNavigate()
+  const [isError, setIsError] = useState(false)
 
   const onSubmit: SubmitHandler<FormData> = useCallback((data) => {
-    return signUp(data.name, data.email, data.password)
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err))
+    void signUp(data.name, data.email, data.password)
+      .then((_) => navigate('/'))
+      .catch((_) => {
+        setIsError(true)
+      })
   }, [])
 
   return (
@@ -109,6 +113,14 @@ const SignUp = () => {
           </form>
         </div>
       </div>
+      <Snackbar
+        open={isError}
+        autoHideDuration={6000}
+        onClose={() => setIsError(false)}
+        security="error"
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
+        <Alert severity="error">ログインに失敗しました</Alert>
+      </Snackbar>
     </Layout>
   )
 }

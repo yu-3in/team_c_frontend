@@ -1,8 +1,8 @@
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
 import { Layout } from '../components/Layout/Layout'
-import { TextField, Button } from '@mui/material'
+import { TextField, Button, Alert, Snackbar } from '@mui/material'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { signIn } from '../apis/user'
 
 type FormData = {
@@ -12,10 +12,15 @@ type FormData = {
 
 const Login = () => {
   const { control, handleSubmit } = useForm<FormData>()
+  const navigate = useNavigate()
+  const [isError, setIsError] = useState(false)
+
   const onSubmit: SubmitHandler<FormData> = useCallback((data) => {
-    return signIn(data.email, data.password)
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err))
+    void signIn(data.email, data.password)
+      .then((_) => navigate('/'))
+      .catch((_) => {
+        setIsError(true)
+      })
   }, [])
 
   return (
@@ -32,6 +37,13 @@ const Login = () => {
               <Controller
                 name="email"
                 control={control}
+                rules={{
+                  required: 'メールアドレスを入力してください',
+                  pattern: {
+                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                    message: 'メールアドレスの形式が正しくありません',
+                  },
+                }}
                 render={({ field, fieldState }) => (
                   <TextField
                     // eslint-disable-next-line react/jsx-props-no-spreading
@@ -49,6 +61,13 @@ const Login = () => {
               <Controller
                 name="password"
                 control={control}
+                rules={{
+                  required: 'パスワードを入力してください',
+                  minLength: {
+                    value: 8,
+                    message: 'パスワードは8文字以上で入力してください',
+                  },
+                }}
                 render={({ field, fieldState }) => (
                   <TextField
                     // eslint-disable-next-line react/jsx-props-no-spreading
@@ -75,6 +94,14 @@ const Login = () => {
           </form>
         </div>
       </div>
+      <Snackbar
+        open={isError}
+        autoHideDuration={6000}
+        onClose={() => setIsError(false)}
+        security="error"
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
+        <Alert severity="error">ログインに失敗しました</Alert>
+      </Snackbar>
     </Layout>
   )
 }

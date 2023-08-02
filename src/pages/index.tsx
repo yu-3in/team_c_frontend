@@ -1,4 +1,3 @@
-import { Button } from '../components/Button/Button'
 import { Layout } from '../components/Layout/Layout'
 import { SidePanel } from '../components/Panel/SidePanel'
 import { useCallback, useState } from 'react'

@@ -40,7 +40,7 @@ export const Home: React.FC = () => {
                     setOpenCreateDrawer(true)
                     setTargetStatus('doing')
                   }}
-                  className="min-w-[300px]"
+                  className="min-w-[350px]"
                 />
               </div>
               <div className="w-full">
@@ -52,6 +52,7 @@ export const Home: React.FC = () => {
                     setOpenCreateDrawer(true)
                     setTargetStatus('todo')
                   }}
+                  className="min-w-[350px]"
                 />
               </div>
             </div>

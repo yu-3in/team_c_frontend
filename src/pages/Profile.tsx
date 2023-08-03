@@ -115,23 +115,22 @@ const Profile: React.FC = () => {
     <>
       <Layout>
         <div className={styles.contents}>
-          <div className={styles.wrapper}>
-            <div className={styles.profile}>
-              <div className={styles.profileContents}>
-                <ProfileSideBar />
-              </div>
+          <div className="grid w-full grid-cols-6 pt-10">
+            <div className="col-span-2 p-8">
+              <ProfileSideBar />
             </div>
-            <div className={styles.data}>
-              <div className="w-full">
+            <div className="col-span-4 rounded-xl bg-white p-4">
+              <div className="flex flex-col gap-4">
                 <HighchartsReact highcharts={Highcharts} options={options} />
+                <TicketList
+                  tickets={doneTickets}
+                  status="done"
+                  onClick={handleClickTicketCard}
+                  direction="row"
+                  noItemMessage="完了したチケットはありません"
+                  className="mx-4"
+                />
               </div>
-              <TicketList
-                tickets={doneTickets}
-                status="done"
-                onClick={handleClickTicketCard}
-                direction="row"
-                noItemMessage="完了したチケットはありません"
-              />
             </div>
           </div>
         </div>

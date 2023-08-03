@@ -10,14 +10,14 @@ import { Link } from 'react-router-dom'
 import { useQuery } from 'react-query'
 import { User } from '../types/user'
 import { getUsers } from '../apis/user'
-import { getTickets } from '../apis/ticket'
-// import { Ticket } from '../types/ticket'
+import { Ticket } from '../types/ticket'
 import '../styles/calendar-global.css'
 import { Button } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
 import { SidePanel } from '../components/Panel/SidePanel'
 import { TicketForm } from '../components/Tickets/TicketForm'
 import { Status } from '../types/status'
+import { deleteTicket, getTickets } from '../apis/ticket'
 
 type EventType = {
   id: string
@@ -27,9 +27,12 @@ type EventType = {
 }
 
 const Calendar = () => {
-  const [tickets, setTickets] = useState<EventType[]>([])
+  const [events, setEvents] = useState<EventType[]>([])
+  const [tickets, setTickets] = useState<Ticket[]>([])
   const [users, setUsers] = useState<User[]>([])
   const [openCreateDrawer, setOpenCreateDrawer] = useState(false)
+  const [openEditDrawer, setOpenEditDrawer] = useState(false)
+  const [clickedTicket, setClickedTicket] = useState<Ticket>()
   const [targetStatus] = useState<Status>()
 
   const getUsersQuery = useQuery(['users'], () => getUsers(), {
@@ -38,7 +41,6 @@ const Calendar = () => {
 
   const getTicketsQuery = useQuery(['tickets'], () => getTickets(), {
     onSuccess: (res) => {
-      console.log(res)
       const tickets: EventType[] = res.map((ticket) => {
         return {
           id: String(ticket.id),
@@ -48,12 +50,16 @@ const Calendar = () => {
         }
       })
 
-      setTickets(tickets)
+      setEvents(tickets)
+      setTickets(res)
     },
   })
 
-  const handleClick = (event: { id: string }) => {
-    alert(event.id)
+  const handleClickTicketCard = (id: string) => {
+    console.log(id)
+    const obj = tickets.find((ticket) => ticket.id === Number(id))
+    setOpenEditDrawer(true)
+    setClickedTicket(obj)
   }
 
   if (getUsersQuery.isLoading) return <>ロード中</>
@@ -76,7 +82,7 @@ const Calendar = () => {
             </div>
             <div className={styles.userList}>
               {users.map((user) => (
-                <Link to="/user" key={user.id}>
+                <Link to="/profile" key={user.id}>
                   <div className={styles.userData}>
                     <div className={styles.iconArea}></div>
                     <div className={styles.content}>
@@ -100,22 +106,33 @@ const Calendar = () => {
                 center: '',
                 right: 'prev,next',
               }}
-              events={tickets}
-              eventClick={(arg) =>
-                handleClick({
-                  id: arg.event.id,
-                })
-              }
+              events={events}
+              eventClick={(arg) => {
+                handleClickTicketCard(arg.event.id)
+              }}
             />
           </div>
         </div>
       </div>
-
       <SidePanel
         open={openCreateDrawer}
         title="チケットを作成する"
         onClose={() => setOpenCreateDrawer(false)}>
         <TicketForm onClose={() => setOpenCreateDrawer(false)} defaultStatus={targetStatus} />
+      </SidePanel>
+      <SidePanel
+        open={openEditDrawer}
+        title="チケットを編集する"
+        onClose={() => setOpenEditDrawer(false)}
+        // eslint-disable-next-line @typescript-eslint/no-misused-promises
+        onDelete={async () => {
+          if (clickedTicket) {
+            await deleteTicket(clickedTicket.id)
+            void getTicketsQuery.refetch()
+          }
+          setOpenEditDrawer(false)
+        }}>
+        <TicketForm ticket={clickedTicket} onClose={() => setOpenEditDrawer(false)} />
       </SidePanel>
     </Layout>
   )

@@ -209,9 +209,13 @@ export const TicketForm: React.FC<TicketFormProps> = ({
             defaultValue={ticket?.User?.id}
             render={({ fieldState }) => (
               <Autocomplete
-                options={(users && users?.map((user) => user.id)) ?? []}
+                options={users && users.length > 0 ? users?.map((user) => user.id) ?? [] : []}
                 defaultValue={ticket?.User?.id}
-                getOptionLabel={(option) => users?.find((user) => user.id === option)?.name ?? ''}
+                getOptionLabel={(option) =>
+                  users && users.length > 0
+                    ? users?.find((user) => user.id === option)?.name ?? ''
+                    : ''
+                }
                 renderInput={(params) => (
                   <TextField
                     // eslint-disable-next-line react/jsx-props-no-spreading

@@ -3,7 +3,8 @@ import { Layout } from '../components/Layout/Layout'
 import { TextField, Button, Alert, Snackbar } from '@mui/material'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
-import { signIn } from '../apis/user'
+import { getUsers, signIn } from '../apis/user'
+import { useQuery } from 'react-query'
 
 type FormData = {
   email: string
@@ -14,6 +15,7 @@ const Login = () => {
   const { control, handleSubmit } = useForm<FormData>()
   const navigate = useNavigate()
   const [isError, setIsError] = useState(false)
+  const { data: user, isLoading } = useQuery('user', getUsers)
 
   const onSubmit: SubmitHandler<FormData> = useCallback((data) => {
     void signIn(data.email, data.password)
@@ -22,6 +24,10 @@ const Login = () => {
         setIsError(true)
       })
   }, [])
+
+  if (!isLoading && user) {
+    navigate('/')
+  }
 
   return (
     <Layout>

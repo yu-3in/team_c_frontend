@@ -33,7 +33,7 @@ export const NavList: React.FC = () => {
     <List
       disablePadding={lg}
       className="m-0 flex flex-col p-0 text-gray-800 lg:mb-0 lg:mt-0 lg:flex-row lg:gap-1">
-      {navListMenuItems.map(({ icon, title, to },index) => (
+      {navListMenuItems.map(({ icon, title, to }, index) => (
         <>
           <Typography key={title}>
             <ListItem className="flex items-center" dense={lg}>
@@ -43,7 +43,7 @@ export const NavList: React.FC = () => {
               </ListItemButton>
             </ListItem>
           </Typography>
-          {navListMenuItems.length-1!==index&&<Divider orientation="vertical" flexItem />}
+          {navListMenuItems.length - 1 !== index && <Divider orientation="vertical" flexItem />}
         </>
       ))}
     </List>

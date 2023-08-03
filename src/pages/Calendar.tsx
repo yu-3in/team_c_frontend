@@ -22,14 +22,7 @@ type EventType = {
 }
 
 const Calendar = () => {
-  const [tickets, setTickets] = useState<EventType[]>([
-    {
-      title: 'Initial Data',
-      start: '2023-08-01T10:00:00',
-      end: '2023-08-01T14:00:00',
-      id: '10',
-    },
-  ])
+  const [tickets, setTickets] = useState<EventType[]>([])
   const [users, setUsers] = useState<User[]>([])
 
   const getUsersQuery = useQuery(['users'], () => getUsers(), {
@@ -38,6 +31,7 @@ const Calendar = () => {
 
   const getTicketsQuery = useQuery(['tickets'], () => getTickets(), {
     onSuccess: (res) => {
+      console.log(res)
       const tickets: EventType[] = res.map((ticket) => {
         return {
           id: String(ticket.id),
@@ -46,7 +40,7 @@ const Calendar = () => {
           end: ticket.endAt,
         }
       })
-      console.log(tickets)
+
       setTickets(tickets)
     },
   })

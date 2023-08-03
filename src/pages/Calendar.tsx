@@ -40,23 +40,11 @@ const Calendar = () => {
   const [openEditDrawer, setOpenEditDrawer] = useState(false)
   const [clickedTicket, setClickedTicket] = useState<Ticket>()
   const [targetStatus] = useState<Status>()
+  const [isFirst, setIsFirst] = useState(true)
 
   const { data: me } = useQuery(['user'], getMe)
   const { data: users } = useQuery(['users'], getUsers)
-  const { data: tickets, refetch: refetchTickets } = useQuery(['tickets'], () => getTickets(), {
-    onSuccess: (res) => {
-      const tickets: EventType[] = res.map((ticket) => {
-        return {
-          id: String(ticket.id),
-          title: ticket.title,
-          start: ticket.startAt,
-          end: ticket.endAt,
-        }
-      })
-
-      setEvents(tickets)
-    },
-  })
+  const { data: tickets, refetch: refetchTickets } = useQuery(['tickets'], () => getTickets())
 
   const [checked, setChecked] = useState<number[]>([])
 
@@ -74,10 +62,11 @@ const Calendar = () => {
   }
 
   useEffect(() => {
-    if (me?.id) {
+    if (isFirst && me?.id) {
+      setIsFirst(false)
       setChecked([me.id])
     }
-  }, [])
+  }, [me?.id])
 
   useEffect(() => {
     const events: EventType[] =
@@ -101,8 +90,6 @@ const Calendar = () => {
       })
     )
   }, [checked, tickets])
-
-  console.log(events)
 
   const handleClickTicketCard = (id: string) => {
     console.log(id)
@@ -140,7 +127,6 @@ const Calendar = () => {
                           <Checkbox
                             edge="start"
                             checked={checked.indexOf(user.id) !== -1}
-                            defaultChecked={user.id === me?.id}
                             tabIndex={-1}
                             disableRipple
                             inputProps={{ 'aria-labelledby': labelId }}

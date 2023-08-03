@@ -69,7 +69,7 @@ export const TicketList: React.FC<TicketListProps> = ({
                 <div className="font-weight flex flex-col items-center justify-center pb-8 pt-4">
                   <Button
                     variant="contained"
-                    color="info"
+                    color="primary"
                     startIcon={<AddIcon />}
                     onClick={noItemOnClick}>
                     作成する

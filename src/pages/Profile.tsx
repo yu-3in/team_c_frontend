@@ -99,7 +99,7 @@ const Profile: React.FC = () => {
         responsive: {},
         column: {
           // 棒の色を変更
-          // color: 'blue',
+          color: '#F35823',
         },
       },
       responsive: {

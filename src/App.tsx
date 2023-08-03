@@ -10,53 +10,57 @@ import Login from './pages/Login'
 import SignUp from './pages/SignUp'
 import AuthWrapper from './components/Auth/AuthWrapper'
 import { QueryClient, QueryClientProvider } from 'react-query'
+import appTheme from './styles/mui-global'
+import { ThemeProvider } from '@mui/material'
 
 const App = () => {
   const queryClient = new QueryClient()
 
   return (
-    <BrowserRouter>
-      <QueryClientProvider client={queryClient}>
-        <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={ja.name}>
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <AuthWrapper>
-                  <Home />
-                </AuthWrapper>
-              }
-            />
-            <Route
-              path="/calendar"
-              element={
-                <AuthWrapper>
-                  <Calendar />
-                </AuthWrapper>
-              }
-            />
-            <Route
-              path="tickets"
-              element={
-                <AuthWrapper>
-                  <Tickets />
-                </AuthWrapper>
-              }
-            />
-            <Route
-              path="profile"
-              element={
-                <AuthWrapper>
-                  <Profile />
-                </AuthWrapper>
-              }
-            />
-            <Route path="login" element={<Login />} />
-            <Route path="signup" element={<SignUp />} />
-          </Routes>
-        </LocalizationProvider>
-      </QueryClientProvider>
-    </BrowserRouter>
+    <ThemeProvider theme={appTheme}>
+      <BrowserRouter>
+        <QueryClientProvider client={queryClient}>
+          <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={ja.name}>
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <AuthWrapper>
+                    <Home />
+                  </AuthWrapper>
+                }
+              />
+              <Route
+                path="/calendar"
+                element={
+                  <AuthWrapper>
+                    <Calendar />
+                  </AuthWrapper>
+                }
+              />
+              <Route
+                path="tickets"
+                element={
+                  <AuthWrapper>
+                    <Tickets />
+                  </AuthWrapper>
+                }
+              />
+              <Route
+                path="profile"
+                element={
+                  <AuthWrapper>
+                    <Profile />
+                  </AuthWrapper>
+                }
+              />
+              <Route path="login" element={<Login />} />
+              <Route path="signup" element={<SignUp />} />
+            </Routes>
+          </LocalizationProvider>
+        </QueryClientProvider>
+      </BrowserRouter>
+    </ThemeProvider>
   )
 }
 

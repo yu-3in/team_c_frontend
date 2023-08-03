@@ -64,7 +64,7 @@ const Calendar = () => {
           <div className={styles.side}>
             <Button
               variant="contained"
-              color="info"
+              color="primary"
               startIcon={<AddIcon />}
               onClick={() => setOpenCreateDrawer(true)}>
               作成する

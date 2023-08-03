@@ -106,7 +106,7 @@ const Calendar = () => {
           <div className="relative pl-4 pt-5">
             <Button
               variant="contained"
-              color="info"
+              color="primary"
               startIcon={<AddIcon />}
               onClick={() => setOpenCreateDrawer(true)}>
               作成する

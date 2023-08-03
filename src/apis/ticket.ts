@@ -2,16 +2,16 @@ import apiClient from '../libs/apiClient'
 import { Sort } from '../types/sort'
 import { Ticket } from '../types/ticket'
 
-export const getTickets = (sort?: Sort, assign?: number, genre?: number) => {
+export const getTickets = (sort?: Sort, userId?: number, genreId?: number) => {
   const queryParams: Record<string, string | number> = {}
   if (sort) {
     queryParams.sort = sort
   }
-  if (assign) {
-    queryParams.assign = assign
+  if (userId) {
+    queryParams.userId = userId
   }
-  if (genre) {
-    queryParams.genre = genre
+  if (genreId) {
+    queryParams.genreId = genreId
   }
 
   return apiClient.get<Ticket[]>(`/tickets`, { params: queryParams }).then((res) => {

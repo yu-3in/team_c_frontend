@@ -12,13 +12,17 @@ import { TicketForm } from '../components/Tickets/TicketForm'
 import { useQuery } from 'react-query'
 import { deleteTicket, getTickets } from '../apis/ticket'
 import { Status } from '../types/status'
+import { getMe } from '../apis/user'
 
 export const Home: React.FC = () => {
   const [openCreateDrawer, setOpenCreateDrawer] = useState(false)
   const [openEditDrawer, setOpenEditDrawer] = useState(false)
   const [clickedTicket, setClickedTicket] = useState<Ticket>()
   const [targetStatus, setTargetStatus] = useState<Status>()
-  const { data: tickets, refetch: refetchTickets } = useQuery(['tickets'], () => getTickets())
+  const { data: user } = useQuery(['user'], () => getMe())
+  const { data: tickets, refetch: refetchTickets } = useQuery(['tickets', user], () =>
+    getTickets(undefined, user?.id)
+  )
 
   const handleClickTicketCard = useCallback((ticket: Ticket) => {
     setOpenEditDrawer(true)

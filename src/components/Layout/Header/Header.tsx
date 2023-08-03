@@ -18,16 +18,18 @@ export const Header: React.FC<HeaderProps> = () => {
   return (
     <header>
       <Navbar className="mx-auto my-2 max-w-[95%] px-4 py-2">
-         <div className="flex items-center justify-start text-blue-gray-900">
-          <h6
-            className="mr-4 cursor-pointer py-1.5 text-inherit lg:ml-2"
-            onClick={() => navigate('/')}>
-            Header
-          </h6>
-          <div className="flex">
+        <div className="flex items-center justify-between text-blue-gray-900">
+          <div className="flex items-center justify-start text-blue-gray-900">
+            <h6
+              className="mr-4 cursor-pointer py-1.5 text-inherit lg:ml-2"
+              onClick={() => navigate('/')}>
+              Header
+            </h6>
             <div className="hidden lg:block">
               <NavList />
             </div>
+          </div>
+          <div>
             <div className="hidden gap-2 lg:flex">
               {/* <Button variant="text" color="blue-gray">
                 ログイン
@@ -41,19 +43,19 @@ export const Header: React.FC<HeaderProps> = () => {
                 {openNav ? <CloseIcon /> : <MenuIcon />}
               </IconButton>
             </div>
+            <Collapse open={openNav} className="lg:hidden">
+              <NavList />
+              <div className="flex w-full flex-nowrap items-center gap-2">
+                <Button variant="outlined" size="small" fullWidth>
+                  Sign In
+                </Button>
+                <Button variant="contained" size="small" fullWidth>
+                  Sign Up
+                </Button>
+              </div>
+            </Collapse>
           </div>
         </div>
-        <Collapse open={openNav} className="lg:hidden">
-          <NavList />
-          <div className="flex w-full flex-nowrap items-center gap-2">
-            <Button variant="outlined" size="small" fullWidth>
-              Sign In
-            </Button>
-            <Button variant="contained" size="small" fullWidth>
-              Sign Up
-            </Button>
-          </div>
-        </Collapse>
       </Navbar>
     </header>
   )

@@ -112,7 +112,7 @@ const Profile: React.FC = () => {
         ],
       },
     }),
-    [genres, scores]
+    [scores, genres, tickets]
   )
 
   return (

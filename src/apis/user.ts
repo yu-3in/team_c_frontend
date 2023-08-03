@@ -66,3 +66,9 @@ export const deleteMe = () => {
     return res.data
   })
 }
+
+export const updateUsersGenres = (genreIds: number[]) => {
+  return apiClient.put<User>('/users/genres', { genreIds }).then((res) => {
+    return res.data
+  })
+}

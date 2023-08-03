@@ -12,6 +12,7 @@ import { User } from '../types/user'
 import { getUsers } from '../apis/user'
 import { getTickets } from '../apis/ticket'
 // import { Ticket } from '../types/ticket'
+import '../styles/calendar-global.css'
 
 type EventType = {
   id: string

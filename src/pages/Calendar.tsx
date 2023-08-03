@@ -13,6 +13,11 @@ import { getUsers } from '../apis/user'
 import { getTickets } from '../apis/ticket'
 // import { Ticket } from '../types/ticket'
 import '../styles/calendar-global.css'
+import { Button } from '@mui/material'
+import AddIcon from '@mui/icons-material/Add'
+import { SidePanel } from '../components/Panel/SidePanel'
+import { TicketForm } from '../components/Tickets/TicketForm'
+import { Status } from '../types/status'
 
 type EventType = {
   id: string
@@ -24,6 +29,8 @@ type EventType = {
 const Calendar = () => {
   const [tickets, setTickets] = useState<EventType[]>([])
   const [users, setUsers] = useState<User[]>([])
+  const [openCreateDrawer, setOpenCreateDrawer] = useState(false)
+  const [targetStatus] = useState<Status>()
 
   const getUsersQuery = useQuery(['users'], () => getUsers(), {
     onSuccess: (res) => setUsers(res),
@@ -57,7 +64,13 @@ const Calendar = () => {
       <div className={styles.contents}>
         <div className={styles.wrapper}>
           <div className={styles.side}>
-            <button onClick={() => console.log()}>チケット作成</button>
+            <Button
+              variant="contained"
+              color="info"
+              startIcon={<AddIcon />}
+              onClick={() => setOpenCreateDrawer(true)}>
+              作成する
+            </Button>
             <div className={styles.userHeading}>
               <h1>ユーザーリスト</h1>
             </div>
@@ -97,6 +110,13 @@ const Calendar = () => {
           </div>
         </div>
       </div>
+
+      <SidePanel
+        open={openCreateDrawer}
+        title="チケットを作成する"
+        onClose={() => setOpenCreateDrawer(false)}>
+        <TicketForm onClose={() => setOpenCreateDrawer(false)} defaultStatus={targetStatus} />
+      </SidePanel>
     </Layout>
   )
 }

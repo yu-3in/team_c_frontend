@@ -17,6 +17,7 @@ body {
 .side {
   width: 280px;
   padding: 30px;
+  padding-top: 18px;
 }
 
 .calendar {

@@ -105,7 +105,7 @@ const SignUp = () => {
               </Button>
               <div className="mt-2 flex items-center justify-center text-sm text-[#636366]">
                 <p>アカウントをお持ちですか？</p>
-                <Link to={'/login'} className="font-bold">
+                <Link to={'/login'} className="font-bold underline">
                   ログイン
                 </Link>
               </div>

@@ -125,11 +125,13 @@ const Profile: React.FC = () => {
               <div className="w-full">
                 <HighchartsReact highcharts={Highcharts} options={options} />
               </div>
-              {doneTickets ? (
-                <TicketList tickets={doneTickets} status="done" onClick={handleClickTicketCard} />
-              ) : (
-                <div className="h-32 w-full rounded-md bg-[#F3E4FA]" />
-              )}
+              <TicketList
+                tickets={doneTickets}
+                status="done"
+                onClick={handleClickTicketCard}
+                direction="row"
+                noItemMessage="完了したチケットはありません"
+              />
             </div>
           </div>
         </div>

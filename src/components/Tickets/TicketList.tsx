@@ -13,6 +13,8 @@ export type TicketListProps = {
   onClick?: (ticket: Ticket) => void
   noItemOnClick?: () => void
   className?: string
+  direction?: 'row' | 'column'
+  noItemMessage?: string
 }
 
 export const TicketList: React.FC<TicketListProps> = ({
@@ -21,10 +23,16 @@ export const TicketList: React.FC<TicketListProps> = ({
   onClick,
   noItemOnClick,
   className,
+  direction = 'row',
+  noItemMessage,
 }) => {
   return (
     <div
-      className={classNames('relative rounded-xl px-4 pb-4', className)}
+      className={classNames(
+        'relative rounded-xl px-4 pb-4',
+        direction ? 'flex-row' : 'flex-col',
+        className
+      )}
       style={{ backgroundColor: statusConfig[status].color }}>
       <div
         className="sticky top-0 z-10 -mx-4 flex items-center gap-3 rounded-t-xl p-4 pl-2"
@@ -43,11 +51,22 @@ export const TicketList: React.FC<TicketListProps> = ({
           ))}
         </ul>
       ) : (
-        <div className="font-weight flex flex-col items-center justify-center pb-8 pt-4">
-          <Button variant="contained" color="info" startIcon={<AddIcon />} onClick={noItemOnClick}>
-            作成する
-          </Button>
-        </div>
+        <>
+          {noItemOnClick && (
+            <div className="font-weight flex flex-col items-center justify-center pb-8 pt-4">
+              <Button
+                variant="contained"
+                color="info"
+                startIcon={<AddIcon />}
+                onClick={noItemOnClick}>
+                作成する
+              </Button>
+            </div>
+          )}
+          {noItemMessage && (
+            <p className="pb-4 text-center text-xl font-bold text-gray-700">{noItemMessage}</p>
+          )}
+        </>
       )}
     </div>
   )

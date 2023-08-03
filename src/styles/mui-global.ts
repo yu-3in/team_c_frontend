@@ -7,9 +7,9 @@ const appTheme = createTheme({
       contrastText: '#ffffff',
     },
     background: {
-      default: '#636366',
+      default: '#878787',
     },
-    text: { primary: '#ffffff' },
+    text: { primary: '#000000' },
   },
 })
 

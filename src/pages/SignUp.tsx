@@ -9,10 +9,11 @@ type FormData = {
   name: string
   email: string
   password: string
+  confirmPassword: string
 }
 
 const SignUp = () => {
-  const { control, handleSubmit } = useForm<FormData>()
+  const { control, handleSubmit, watch } = useForm<FormData>()
   const navigate = useNavigate()
   const [isError, setIsError] = useState(false)
 
@@ -86,6 +87,29 @@ const SignUp = () => {
                     value: 8,
                     message: 'パスワードは8文字以上で入力してください',
                   },
+                }}
+                render={({ field, fieldState }) => (
+                  <TextField
+                    // eslint-disable-next-line react/jsx-props-no-spreading
+                    {...field}
+                    variant="outlined"
+                    type="password"
+                    error={!!fieldState.error}
+                    helperText={fieldState.error?.message}
+                  />
+                )}
+              />
+            </div>
+            <div className="mt-4 flex w-full flex-col gap-2">
+              {' '}
+              {/* パスワード再入力用のフィールド */}
+              <label className="text-sm text-[#636366]">パスワード（再入力）</label>
+              <Controller
+                name="confirmPassword"
+                control={control}
+                rules={{
+                  required: 'パスワードを再入力してください',
+                  validate: (value) => value === watch('password') || 'パスワードが一致しません',
                 }}
                 render={({ field, fieldState }) => (
                   <TextField

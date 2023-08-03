@@ -1,102 +1,61 @@
-import { useQuery, useMutation } from 'react-query'
-import { getMe, updateMe } from '../../apis/user'
+import { useQuery } from 'react-query'
+import { getMe } from '../../apis/user'
 import { Avatar, Divider } from '@mui/material'
 import WysiwygIcon from '@mui/icons-material/Wysiwyg'
 import ApartmentIcon from '@mui/icons-material/Apartment'
 import CategoryIcon from '@mui/icons-material/Category'
 
-import Box from '@mui/material/Box'
-import Button from '@mui/material/Button'
-import Modal from '@mui/material/Modal'
-import { useState } from 'react'
-import { User } from '../../types/user'
-
-const style = {
-  position: 'absolute' as const,
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 400,
-  bgcolor: 'background.paper',
-  boxShadow: 24,
-  borderRadius: 2,
-  p: 4,
-}
+// const style = {
+//   position: 'absolute' as const,
+//   top: '50%',
+//   left: '50%',
+//   transform: 'translate(-50%, -50%)',
+//   width: 400,
+//   bgcolor: 'background.paper',
+//   boxShadow: 24,
+//   borderRadius: 2,
+//   p: 4,
+// }
 
 export const ProfileSideBar: React.FC = () => {
-  // 編集用
-  const [name, setName] = useState<string>('')
-  const [departmentName, setDepartmentName] = useState<string>('')
-  const [productName, setProductName] = useState<string>('')
+  // const [open, setOpen] = useState(false)
+  // const handleOpen = () => {
+  //   setOpen(true)
+  // }
+  // const handleClose = () => setOpen(false)
 
-  // 表示用
-  const [dispName, setDispName] = useState<string>('')
-  const [dispDepartmentName, setDispDepartmentName] = useState<string>('')
-  const [dispProductName, setDispProductName] = useState<string>('')
+  const { data: user } = useQuery(['user'], getMe)
 
-  const [open, setOpen] = useState(false)
-  const handleOpen = () => {
-    setName(dispName)
-    setDepartmentName(departmentName)
-    setProductName(productName)
-    setOpen(true)
-  }
-  const handleClose = () => setOpen(false)
+  // const handleUpdate = () => {
+  //   if (user) {
+  //     void updateMe(user)
+  //   }
 
-  const { data: user } = useQuery(['user'], getMe, {
-    onSuccess: (res) => {
-      setDispName(res.name)
-      if (res.departmentName) {
-        setDispDepartmentName(res.departmentName)
-      }
-      if (res.productName) {
-        setDispProductName(res.productName)
-      }
-    },
-  })
-
-  const updateUserMutation = useMutation((user: User) => updateMe(user), {
-    onSuccess: (res) => {
-      setDispName(res.name)
-      if (res.departmentName) {
-        setDispDepartmentName(res.departmentName)
-      }
-      if (res.productName) {
-        setDispProductName(res.productName)
-      }
-    },
-  })
-
-  const handleUpdate = () => {
-    if (user && user.name) {
-      updateUserMutation.mutate({
-        ...user,
-        name: name,
-        departmentName: departmentName,
-        productName: productName,
-      })
-
-      setName('')
-      setDepartmentName('')
-      setProductName('')
-    }
-    handleClose()
-  }
+  //   handleClose()
+  // }
 
   return (
     <>
       <div className="flex justify-center">
         <Avatar sx={{ width: 100, height: 100 }} />
       </div>
-      <h1 className="my-5 pb-4 text-center text-2xl font-bold">{dispName}</h1>
+      <h1 className="my-5 pb-4 text-center text-2xl font-bold">{user?.name}</h1>
       <ul className="space-y-3">
+        <Divider />
+        <li className="flex flex-col gap-2">
+          <div className="flex items-center gap-2  text-gray-700">
+            <ApartmentIcon />
+            <h2 className="text-lg font-bold">メールアドレス</h2>
+          </div>
+          <p className="pl-3">{user?.email ?? '未設定'}</p>
+        </li>
         <Divider />
         <li className="flex flex-col gap-2">
           <div className="flex items-center gap-2  text-gray-700">
             <ApartmentIcon />
             <h2 className="text-lg font-bold">部署</h2>
           </div>
-          <p className="pl-3">{dispDepartmentName ?? '未設定'}</p>
+          <p className="pl-3">{user?.departmentName ?? '未設定'}</p>
         </li>
         <Divider />
         <li className="flex flex-col gap-2">
@@ -104,7 +63,7 @@ export const ProfileSideBar: React.FC = () => {
             <WysiwygIcon />
             <h2 className="text-lg font-bold">プロダクト</h2>
           </div>
-          <p className="pl-3">{dispProductName ?? '未設定'}</p>
+          <p className="pl-3">{user?.productName ?? '未設定'}</p>
         </li>
         <Divider />
         <li className="flex flex-col gap-2">
@@ -125,12 +84,12 @@ export const ProfileSideBar: React.FC = () => {
           </ul>
         </li>
       </ul>
-      <Button variant="contained" onClick={handleOpen}>
+      {/* <Button variant="contained" onClick={handleOpen}>
         プロフィールを編集
-      </Button>
+      </Button> */}
 
       {/* モーダル */}
-      <Modal
+      {/* <Modal
         open={open}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
@@ -168,7 +127,7 @@ export const ProfileSideBar: React.FC = () => {
             </Button>
           </div>
         </Box>
-      </Modal>
+      </Modal> */}
     </>
   )
 }

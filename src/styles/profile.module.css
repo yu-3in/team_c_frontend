@@ -13,23 +13,3 @@ body {
   height: 100%;
   display: flex;
 }
-
-.profile {
-  height: 100%;
-  width: 280px;
-  padding-top: 40px;
-}
-.profileContents {
-  padding: 0 30px;
-}
-
-.data {
-  flex: 1;
-  height: 100%;
-  background: white;
-  border-radius: 6px;
-  padding: 20px;
-  display: grid;
-  grid-template-rows: 5fr 1fr;
-  gap: 10px;
-}

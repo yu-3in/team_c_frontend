@@ -23,19 +23,19 @@ export const TicketList: React.FC<TicketListProps> = ({
   onClick,
   noItemOnClick,
   className,
-  direction = 'row',
+  direction = 'column',
   noItemMessage,
 }) => {
   return (
     <div
       className={classNames(
         'relative rounded-xl px-4 pb-4',
-        direction ? 'flex-row' : 'flex-col',
+        direction === 'row' && 'overflow-x-scroll',
         className
       )}
       style={{ backgroundColor: statusConfig[status].color }}>
       <div
-        className="sticky top-0 z-10 -mx-4 flex items-center gap-3 rounded-t-xl p-4 pl-2"
+        className="sticky left-0 top-0 z-10 -mx-4 flex items-center gap-3 rounded-t-xl p-4 pl-2"
         style={{ backgroundColor: statusConfig[status].color }}>
         <div
           className="h-6 w-6 rounded-full"
@@ -43,7 +43,11 @@ export const TicketList: React.FC<TicketListProps> = ({
         <h2 className="text-2xl font-bold">{statusConfig[status].title}</h2>
       </div>
       {tickets.length > 0 ? (
-        <ul className="space-y-6">
+        <ul
+          className={classNames(
+            'flex gap-6',
+            direction === 'row' ? 'min-w-max max-w-full flex-row' : 'flex-col'
+          )}>
           {tickets.map((ticket) => (
             <li key={ticket.id}>
               <TicketsCard ticket={ticket} onClick={onClick} />

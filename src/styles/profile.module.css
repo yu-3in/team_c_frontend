@@ -1,5 +1,5 @@
 body {
-  background: #F3F3F3;
+  background: #f3f3f3;
 }
 
 .contents {
@@ -30,9 +30,6 @@ body {
   border-radius: 6px;
   padding: 20px;
   display: grid;
-  grid-template-rows: auto 1fr auto;
+  grid-template-rows: 5fr 1fr;
   gap: 10px;
 }
-
-
-

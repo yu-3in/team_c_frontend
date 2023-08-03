@@ -65,7 +65,7 @@ export const Tickets: React.FC = () => {
               }
               setOpenEditDrawer(false)
             }}>
-            <TicketForm ticket={clickedTicket} onClose={() => setOpenCreateDrawer(false)} />
+            <TicketForm ticket={clickedTicket} onClose={() => setOpenEditDrawer(false)} />
           </SidePanel>
           <SidePanel
             open={openCreateDrawer}

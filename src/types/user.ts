@@ -5,6 +5,8 @@ export type User = {
   name: string
   email: string
   genres: Genre[]
+  departmentName?: string
+  productName?: string
   createdAt: string
   updatedAt: string
 }

@@ -209,7 +209,7 @@ export const TicketForm: React.FC<TicketFormProps> = ({
             defaultValue={ticket?.User?.id}
             render={({ fieldState }) => (
               <Autocomplete
-                options={users?.map((user) => user.id) ?? []}
+                options={(users && users?.map((user) => user.id)) ?? []}
                 defaultValue={ticket?.User?.id}
                 getOptionLabel={(option) => users?.find((user) => user.id === option)?.name ?? ''}
                 renderInput={(params) => (

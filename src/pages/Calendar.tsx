@@ -8,7 +8,6 @@ import styles from '../styles/calendar.module.css'
 import { Layout } from '../components/Layout/Layout'
 import { Link } from 'react-router-dom'
 import { useQuery } from 'react-query'
-import { User } from '../types/user'
 import { getUsers } from '../apis/user'
 import { Ticket } from '../types/ticket'
 import '../styles/calendar-global.css'
@@ -28,18 +27,14 @@ type EventType = {
 
 const Calendar = () => {
   const [events, setEvents] = useState<EventType[]>([])
-  const [tickets, setTickets] = useState<Ticket[]>([])
-  const [users, setUsers] = useState<User[]>([])
   const [openCreateDrawer, setOpenCreateDrawer] = useState(false)
   const [openEditDrawer, setOpenEditDrawer] = useState(false)
   const [clickedTicket, setClickedTicket] = useState<Ticket>()
   const [targetStatus] = useState<Status>()
 
-  const getUsersQuery = useQuery(['users'], () => getUsers(), {
-    onSuccess: (res) => setUsers(res),
-  })
+  const { data: users } = useQuery(['users'], getUsers)
 
-  const getTicketsQuery = useQuery(['tickets'], () => getTickets(), {
+  const { data: tickets, refetch: refetchTickets } = useQuery(['tickets'], () => getTickets(), {
     onSuccess: (res) => {
       const tickets: EventType[] = res.map((ticket) => {
         return {
@@ -51,19 +46,16 @@ const Calendar = () => {
       })
 
       setEvents(tickets)
-      setTickets(res)
     },
   })
 
   const handleClickTicketCard = (id: string) => {
     console.log(id)
-    const obj = tickets.find((ticket) => ticket.id === Number(id))
+    const obj = tickets?.find((ticket) => ticket.id === Number(id))
     setOpenEditDrawer(true)
     setClickedTicket(obj)
+    void refetchTickets()
   }
-
-  if (getUsersQuery.isLoading) return <>ロード中</>
-  if (getTicketsQuery.isLoading) return <>チケットデータをロード中</>
 
   return (
     <Layout>
@@ -81,7 +73,7 @@ const Calendar = () => {
               <h1>ユーザーリスト</h1>
             </div>
             <div className={styles.userList}>
-              {users.map((user) => (
+              {users?.map((user) => (
                 <Link to="/profile" key={user.id}>
                   <div className={styles.userData}>
                     <div className={styles.iconArea}></div>
@@ -128,7 +120,7 @@ const Calendar = () => {
         onDelete={async () => {
           if (clickedTicket) {
             await deleteTicket(clickedTicket.id)
-            void getTicketsQuery.refetch()
+            void refetchTickets()
           }
           setOpenEditDrawer(false)
         }}>

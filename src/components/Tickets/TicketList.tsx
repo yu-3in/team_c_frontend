@@ -1,4 +1,4 @@
-import { Button } from '@mui/material'
+import { Button, Skeleton } from '@mui/material'
 import { statusConfig } from '../../configs/status'
 import { Status } from '../../types/status'
 import { Ticket } from '../../types/ticket'
@@ -15,6 +15,7 @@ export type TicketListProps = {
   className?: string
   direction?: 'row' | 'column'
   noItemMessage?: string
+  isLoading?: boolean
 }
 
 export const TicketList: React.FC<TicketListProps> = ({
@@ -25,6 +26,7 @@ export const TicketList: React.FC<TicketListProps> = ({
   className,
   direction = 'column',
   noItemMessage,
+  isLoading = false,
 }) => {
   return (
     <div
@@ -56,19 +58,28 @@ export const TicketList: React.FC<TicketListProps> = ({
         </ul>
       ) : (
         <>
-          {noItemOnClick && (
-            <div className="font-weight flex flex-col items-center justify-center pb-8 pt-4">
-              <Button
-                variant="contained"
-                color="info"
-                startIcon={<AddIcon />}
-                onClick={noItemOnClick}>
-                作成する
-              </Button>
+          {isLoading ? (
+            <div className="flex flex-col gap-8">
+              <Skeleton height={120} variant="rectangular" />
+              <Skeleton height={120} variant="rectangular" />
             </div>
-          )}
-          {noItemMessage && (
-            <p className="pb-4 text-center text-xl font-bold text-gray-700">{noItemMessage}</p>
+          ) : (
+            <>
+              {noItemOnClick && (
+                <div className="font-weight flex flex-col items-center justify-center pb-8 pt-4">
+                  <Button
+                    variant="contained"
+                    color="info"
+                    startIcon={<AddIcon />}
+                    onClick={noItemOnClick}>
+                    作成する
+                  </Button>
+                </div>
+              )}
+              {noItemMessage && (
+                <p className="pb-4 text-center text-xl font-bold text-gray-700">{noItemMessage}</p>
+              )}
+            </>
           )}
         </>
       )}

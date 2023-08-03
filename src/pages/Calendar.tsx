@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import FullCalendar from '@fullcalendar/react'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import dayGridPlugin from '@fullcalendar/daygrid'
@@ -6,23 +6,32 @@ import interactionPlugin from '@fullcalendar/interaction'
 import jaLocale from '@fullcalendar/core/locales/ja'
 import styles from '../styles/calendar.module.css'
 import { Layout } from '../components/Layout/Layout'
-import { Link } from 'react-router-dom'
 import { useQuery } from 'react-query'
-import { getUsers } from '../apis/user'
+import { getMe, getUsers } from '../apis/user'
 import { Ticket } from '../types/ticket'
 import '../styles/calendar-global.css'
-import { Button } from '@mui/material'
+import {
+  Button,
+  Checkbox,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+} from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
 import { SidePanel } from '../components/Panel/SidePanel'
 import { TicketForm } from '../components/Tickets/TicketForm'
 import { Status } from '../types/status'
 import { deleteTicket, getTickets } from '../apis/ticket'
+import PersonIcon from '@mui/icons-material/Person'
 
 type EventType = {
   id: string
   title: string
   start: string | undefined
   end: string | undefined
+  userId?: number
 }
 
 const Calendar = () => {
@@ -32,8 +41,8 @@ const Calendar = () => {
   const [clickedTicket, setClickedTicket] = useState<Ticket>()
   const [targetStatus] = useState<Status>()
 
+  const { data: me } = useQuery(['user'], getMe)
   const { data: users } = useQuery(['users'], getUsers)
-
   const { data: tickets, refetch: refetchTickets } = useQuery(['tickets'], () => getTickets(), {
     onSuccess: (res) => {
       const tickets: EventType[] = res.map((ticket) => {
@@ -49,6 +58,52 @@ const Calendar = () => {
     },
   })
 
+  const [checked, setChecked] = useState<number[]>([])
+
+  const handleToggle = (value: number) => () => {
+    const currentIndex = checked.indexOf(value)
+    const newChecked = [...checked]
+
+    if (currentIndex === -1) {
+      newChecked.push(value)
+    } else {
+      newChecked.splice(currentIndex, 1)
+    }
+
+    setChecked(newChecked)
+  }
+
+  useEffect(() => {
+    if (me?.id) {
+      setChecked([me.id])
+    }
+  }, [])
+
+  useEffect(() => {
+    const events: EventType[] =
+      tickets?.map((ticket) => {
+        return {
+          id: String(ticket.id),
+          title: ticket.title,
+          start: ticket.startAt,
+          end: ticket.endAt,
+          userId: ticket.User?.id,
+        }
+      }) ?? []
+
+    setEvents(
+      events.filter((event) => {
+        if (checked.indexOf(Number(event.userId)) !== -1) {
+          return true
+        }
+
+        return false
+      })
+    )
+  }, [checked, tickets])
+
+  console.log(events)
+
   const handleClickTicketCard = (id: string) => {
     console.log(id)
     const obj = tickets?.find((ticket) => ticket.id === Number(id))
@@ -61,7 +116,7 @@ const Calendar = () => {
     <Layout>
       <div className={styles.contents}>
         <div className={styles.wrapper}>
-          <div className={styles.side}>
+          <div className="relative pl-4 pt-5">
             <Button
               variant="contained"
               color="info"
@@ -69,21 +124,34 @@ const Calendar = () => {
               onClick={() => setOpenCreateDrawer(true)}>
               作成する
             </Button>
-            <div className={styles.userHeading}>
-              <h1>ユーザーリスト</h1>
-            </div>
-            <div className={styles.userList}>
-              {users?.map((user) => (
-                <Link to="/profile" key={user.id}>
-                  <div className={styles.userData}>
-                    <div className={styles.iconArea}></div>
-                    <div className={styles.content}>
-                      <p className={styles.name}>{user.name}</p>
-                      <p className={styles.pos}>{user.email}</p>
-                    </div>
-                  </div>
-                </Link>
-              ))}
+            <h1 className="sticky top-0 -ml-4 mt-8 flex items-center gap-2 bg-inherit py-2 text-xl font-bold text-gray-700">
+              <PersonIcon />
+              チームメンバー
+            </h1>
+            <div className="max-h-[58vh] w-[280px] overflow-y-auto">
+              <List sx={{ width: '100%', ml: -2 }}>
+                {users?.map((user) => {
+                  const labelId = `checkbox-list-label-${user.id}`
+
+                  return (
+                    <ListItem key={user.id} disablePadding>
+                      <ListItemButton role={undefined} onClick={handleToggle(user.id)} dense>
+                        <ListItemIcon>
+                          <Checkbox
+                            edge="start"
+                            checked={checked.indexOf(user.id) !== -1}
+                            defaultChecked={user.id === me?.id}
+                            tabIndex={-1}
+                            disableRipple
+                            inputProps={{ 'aria-labelledby': labelId }}
+                          />
+                        </ListItemIcon>
+                        <ListItemText id={labelId} primary={user.name} secondary={user.email} />
+                      </ListItemButton>
+                    </ListItem>
+                  )
+                })}
+              </List>
             </div>
           </div>
           <div className={styles.calendar}>

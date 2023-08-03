@@ -46,9 +46,10 @@ export const TicketsCard: React.FC<TicketsCardProps> = ({ ticket, onClick }) => 
             <Chip
               label={ticket.Genre?.title}
               size="small"
-              sx={{
-                backgroundColor: ticket.Genre?.color,
-              }}
+              color="primary"
+              // sx={{
+              //   backgroundColor: ticket.Genre?.color,
+              // }}
             />
           </div>
         </CardContent>

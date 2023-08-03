@@ -6,18 +6,19 @@ import {
   Select,
   MenuItem,
   InputAdornment,
+  FilterOptionsState,
 } from '@mui/material'
 import { Ticket } from '../../types/ticket'
 import { DatePicker, DateTimePicker } from '@mui/x-date-pickers'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
 import dayjs from 'dayjs'
 import { renderTimeViewClock } from '@mui/x-date-pickers/timeViewRenderers'
 import { statusConfig } from '../../configs/status'
 import SearchIcon from '@mui/icons-material/Search'
 import { TicketRequest, createTicket, getTickets, updateTicket } from '../../apis/ticket'
 import { getUsers } from '../../apis/user'
-import { getGenres } from '../../apis/genre'
+import { createGenre, getGenres } from '../../apis/genre'
 import { useQuery } from 'react-query'
 import { Status } from '../../types/status'
 
@@ -49,38 +50,54 @@ export const TicketForm: React.FC<TicketFormProps> = ({
   const { refetch } = useQuery(['tickets'], () => getTickets(), {
     enabled: false, // 初回レンダリング時にはAPIを叩かない
   })
+  const [newGenreTitle, setNewGenreTitle] = useState<string>()
 
-  const onSubmit: SubmitHandler<FormData> = useCallback((data) => {
-    const req: TicketRequest = {
-      title: data.title,
-      description: data.description,
-      genreId: data.genreId,
-      status: data.status,
-      userId: data.userId,
-      dueDate: dayjs(data.dueDate).toISOString(),
-      startAt: dayjs(data.startAt).toISOString(),
-      endAt: dayjs(data.endAt).toISOString(),
-    }
-    if (ticket) {
-      // update
-      void updateTicket(ticket.id, req).then((_) => {
-        void refetch()
-        onClose && onClose()
-        reset()
-      })
-    } else {
-      // create
-      createTicket(req)
-        .then((_) => {
+  const onSubmit: SubmitHandler<FormData> = useCallback(
+    async (data) => {
+      if (data.genreId === -1) {
+        // 新規ジャンル作成
+        if (!newGenreTitle) {
+          return
+        }
+        const genre = await createGenre({ title: newGenreTitle })
+        if (!genre) {
+          return
+        }
+        data.genreId = genre.id
+      }
+
+      const req: TicketRequest = {
+        title: data.title,
+        description: data.description,
+        genreId: data.genreId,
+        status: data.status,
+        userId: data.userId,
+        dueDate: dayjs(data.dueDate).toISOString(),
+        startAt: dayjs(data.startAt).toISOString(),
+        endAt: dayjs(data.endAt).toISOString(),
+      }
+      if (ticket) {
+        // update
+        void updateTicket(ticket.id, req).then((_) => {
           void refetch()
           onClose && onClose()
           reset()
         })
-        .catch((_) => {
-          return
-        })
-    }
-  }, [])
+      } else {
+        // create
+        createTicket(req)
+          .then((_) => {
+            void refetch()
+            onClose && onClose()
+            reset()
+          })
+          .catch((_) => {
+            return
+          })
+      }
+    },
+    [newGenreTitle]
+  )
 
   return (
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
@@ -136,9 +153,26 @@ export const TicketForm: React.FC<TicketFormProps> = ({
               <Autocomplete
                 options={genres?.map((genre) => genre.id) ?? []}
                 defaultValue={ticket?.Genre?.id}
-                getOptionLabel={(option) =>
-                  genres?.find((genre) => genre.id === option)?.title ?? ''
-                }
+                getOptionLabel={(option) => {
+                  if (option === -1) {
+                    return newGenreTitle ?? ''
+                  } else {
+                    return genres?.find((genre) => genre.id === option)?.title ?? ''
+                  }
+                }}
+                filterOptions={(options: number[], params: FilterOptionsState<number>) => {
+                  const filtered = options.filter((option: number) => {
+                    const title = genres?.find((genre) => genre.id === option)?.title ?? ''
+
+                    return title.includes(params.inputValue)
+                  })
+                  if (params.inputValue !== '') {
+                    setNewGenreTitle(params.inputValue)
+                    filtered.push(-1)
+                  }
+
+                  return filtered
+                }}
                 renderInput={(params) => (
                   <TextField
                     // eslint-disable-next-line react/jsx-props-no-spreading

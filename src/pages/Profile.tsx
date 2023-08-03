@@ -14,7 +14,11 @@ import { TicketForm } from '../components/Tickets/TicketForm'
 
 const Profile: React.FC = () => {
   const { data: genres } = useQuery(['genres'], getGenres)
-  const { data: tickets, refetch: refreshTickets } = useQuery(['tickets'], () => getTickets())
+  const {
+    data: tickets,
+    isFetching: isFetchingTickets,
+    refetch: refreshTickets,
+  } = useQuery(['tickets'], () => getTickets())
 
   const [scores, setScores] = useState<number[]>([])
   const [doneTickets, setDoneTickets] = useState<Ticket[]>([])
@@ -128,6 +132,7 @@ const Profile: React.FC = () => {
                   onClick={handleClickTicketCard}
                   direction="row"
                   noItemMessage="完了したチケットはありません"
+                  isLoading={isFetchingTickets}
                   className="mx-4"
                 />
               </div>

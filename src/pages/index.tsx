@@ -20,9 +20,11 @@ export const Home: React.FC = () => {
   const [clickedTicket, setClickedTicket] = useState<Ticket>()
   const [targetStatus, setTargetStatus] = useState<Status>()
   const { data: user } = useQuery(['user'], () => getMe())
-  const { data: tickets, refetch: refetchTickets } = useQuery(['tickets', user], () =>
-    getTickets(undefined, user?.id)
-  )
+  const {
+    data: tickets,
+    isFetching: isFetchingTickets,
+    refetch: refetchTickets,
+  } = useQuery(['tickets', user], () => getTickets(undefined, user?.id))
 
   const handleClickTicketCard = useCallback((ticket: Ticket) => {
     setOpenEditDrawer(true)
@@ -45,6 +47,7 @@ export const Home: React.FC = () => {
                       setOpenCreateDrawer(true)
                       setTargetStatus(status as Status)
                     }}
+                    isLoading={isFetchingTickets}
                     className="min-w-[350px]"
                   />
                 </div>

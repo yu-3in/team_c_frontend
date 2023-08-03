@@ -56,7 +56,6 @@ const Calendar = () => {
   })
 
   const handleClickTicketCard = (id: string) => {
-    console.log(id)
     const obj = tickets.find((ticket) => ticket.id === Number(id))
     setOpenEditDrawer(true)
     setClickedTicket(obj)
@@ -82,7 +81,7 @@ const Calendar = () => {
             </div>
             <div className={styles.userList}>
               {users.map((user) => (
-                <Link to="/profile" key={user.id}>
+                <Link to="/profile" key={user.id} state={{ id: user.id }}>
                   <div className={styles.userData}>
                     <div className={styles.iconArea}></div>
                     <div className={styles.content}>

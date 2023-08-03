@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import styles from '../styles/profile.module.css'
+// import { useLocation } from 'react-router-dom'
 import { Layout } from '../components/Layout/Layout'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
@@ -13,6 +14,8 @@ import { SidePanel } from '../components/Panel/SidePanel'
 import { TicketForm } from '../components/Tickets/TicketForm'
 
 const Profile: React.FC = () => {
+  // const {state} :{state: string} = useLocation()
+
   const { data: genres } = useQuery(['genres'], getGenres)
   const { data: tickets, refetch: refreshTickets } = useQuery(['tickets'], () => getTickets())
 

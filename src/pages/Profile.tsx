@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import styles from '../styles/profile.module.css'
 import { Layout } from '../components/Layout/Layout'
 import Highcharts from 'highcharts'
@@ -46,71 +46,74 @@ const Profile: React.FC = () => {
   }, [tickets])
 
   // Highchartsのオプション設定
-  const options = {
-    chart: {
-      type: 'column',
-    },
-    title: {
-      text: '',
-    },
-    xAxis: {
-      categories: genres?.map((item) => item.title),
-      labels: {
-        style: {
-          fontSize: '14px',
-        },
+  const options = useMemo(
+    () => ({
+      chart: {
+        type: 'column',
       },
-    },
-    yAxis: {
       title: {
         text: '',
       },
-      labels: {
-        style: {
-          fontSize: '12px',
-          color: '#636366',
-        },
-      },
-      plotLines: [
-        {
-          value: 0, // 点数が0の位置にプロットラインを追加
-          color: '#e4e4e4',
-          width: 1,
-          zIndex: 5,
-        },
-      ],
-      gridLineColor: '#e4e4e4',
-    },
-
-    legend: {
-      enabled: false,
-    },
-    series: [
-      {
-        name: 'スコア',
-        data: scores,
-      },
-    ],
-    credits: {
-      enabled: false,
-    },
-    plotOptions: {
-      responsive: {},
-      column: {
-        // 棒の色を変更
-        color: '#F35823',
-      },
-    },
-    responsive: {
-      rules: [
-        {
-          condition: {
-            minWidth: 100,
+      xAxis: {
+        categories: genres?.map((item) => item.title),
+        labels: {
+          style: {
+            fontSize: '14px',
           },
         },
+      },
+      yAxis: {
+        title: {
+          text: '',
+        },
+        labels: {
+          style: {
+            fontSize: '12px',
+            color: '#636366',
+          },
+        },
+        plotLines: [
+          {
+            value: 0, // 点数が0の位置にプロットラインを追加
+            color: '#e4e4e4',
+            width: 1,
+            zIndex: 5,
+          },
+        ],
+        gridLineColor: '#e4e4e4',
+      },
+
+      legend: {
+        enabled: false,
+      },
+      series: [
+        {
+          name: 'スコア',
+          data: scores,
+        },
       ],
-    },
-  }
+      credits: {
+        enabled: false,
+      },
+      plotOptions: {
+        responsive: {},
+        column: {
+          // 棒の色を変更
+          color: '#F35823',
+        },
+      },
+      responsive: {
+        rules: [
+          {
+            condition: {
+              minWidth: 100,
+            },
+          },
+        ],
+      },
+    }),
+    [scores, genres, tickets]
+  )
 
   return (
     <>

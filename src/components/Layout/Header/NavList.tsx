@@ -33,6 +33,7 @@ export const NavList: React.FC = () => {
     <List
       disablePadding={lg}
       className="m-0 flex flex-col p-0 text-gray-800 lg:mb-0 lg:mt-0 lg:flex-row">
+      className="m-0 flex flex-col p-0 text-gray-800 lg:mb-0 lg:mt-0 lg:flex-row">
       {navListMenuItems.map(({ icon, title, to },index) => (
         <>
           <Typography key={title}>

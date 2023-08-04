@@ -55,12 +55,12 @@ export const Header: React.FC<HeaderProps> = () => {
     <header>
       <Navbar className="mx-auto my-2 max-w-[95%] px-4 py-2">
         <div className="flex items-center justify-between text-blue-gray-900">
-          <div className="flex gap-2">
-            <h6
-              className="mr-4 cursor-pointer py-1.5 text-inherit lg:ml-2"
+          <div className="flex">
+            <div
+              className="mr-2 flex cursor-pointer flex-col justify-center py-1.5 text-inherit lg:ml-2"
               onClick={() => navigate('/')}>
-              Ticket
-            </h6>
+              <img src="/logo-a.svg" className="h-6" />
+            </div>
             <div className="hidden lg:block">
               <NavList />
             </div>

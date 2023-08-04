@@ -5,6 +5,8 @@ import AdjustIcon from '@mui/icons-material/Adjust'
 import TaskAltIcon from '@mui/icons-material/TaskAlt'
 import { Avatar, CardActionArea, CardContent, Chip } from '@mui/material'
 import { formatDateTime } from '../../uitls/date'
+import { useEffect, useState } from 'react'
+import { checkExpired } from '../../uitls/date'
 
 const StatusIcon: {
   [key in Ticket['status']]: React.ReactNode
@@ -20,6 +22,16 @@ export type TicketsCardProps = {
 }
 
 export const TicketsCard: React.FC<TicketsCardProps> = ({ ticket, onClick }) => {
+  const [isExpired, setIsExpired] = useState<boolean>(false)
+
+  useEffect(() => {
+    if (ticket.dueDate) {
+      setIsExpired(checkExpired(ticket.dueDate))
+    }
+  }, [ticket.dueDate])
+
+  console.log(isExpired)
+
   return (
     <div className="relative overflow-hidden rounded-xl bg-white shadow">
       <CardActionArea onClick={() => onClick && onClick(ticket)}>
@@ -45,9 +57,15 @@ export const TicketsCard: React.FC<TicketsCardProps> = ({ ticket, onClick }) => 
           <div className="flex items-center gap-6 text-sm">
             <div className="flex items-center gap-2">
               <AlarmOnIcon fontSize="small" />
-              <div className="text-[#636366]">
-                {ticket.dueDate && formatDateTime(ticket.dueDate)}
-              </div>
+              {isExpired ? (
+                <div className="text-red-400">
+                  {ticket.dueDate && formatDateTime(ticket.dueDate)}
+                </div>
+              ) : (
+                <div className="text-[#636366]">
+                  {ticket.dueDate && formatDateTime(ticket.dueDate)}
+                </div>
+              )}
             </div>
             <Chip
               label={ticket.Genre?.title}

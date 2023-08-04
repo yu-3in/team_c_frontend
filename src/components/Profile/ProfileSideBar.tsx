@@ -37,7 +37,9 @@ export const ProfileSideBar: React.FC = () => {
   return (
     <>
       <div className="flex justify-center">
-        <Avatar sx={{ width: 100, height: 100 }} />
+        <Avatar sx={{ bgcolor: user?.iconColor, width: 100, height: 100, fontSize: '3em' }}>
+          {user?.name ? user.name.charAt(0) : ''}
+        </Avatar>
       </div>
       <h1 className="my-5 pb-4 text-center text-2xl font-bold">{user?.name}</h1>
       <ul className="space-y-3">

@@ -7,6 +7,7 @@ export type User = {
   genres: Genre[]
   departmentName?: string
   productName?: string
+  iconColor?: string
   createdAt: string
   updatedAt: string
 }

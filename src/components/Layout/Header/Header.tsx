@@ -74,7 +74,9 @@ export const Header: React.FC<HeaderProps> = () => {
                   </p>
                   <Box sx={{ flexGrow: 0 }}>
                     <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                      <Avatar />
+                      <Avatar sx={{ bgcolor: user?.iconColor }}>
+                        {user?.name ? user.name.charAt(0) : ''}
+                      </Avatar>
                     </IconButton>
                     <Menu
                       sx={{ mt: '50px' }}

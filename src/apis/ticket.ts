@@ -32,6 +32,7 @@ export type TicketRequest = {
   startAt?: string
   endAt?: string
   description?: string
+  raiseHandUserId?: number
   userId?: number
   genreId: number
 }

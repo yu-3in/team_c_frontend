@@ -51,6 +51,7 @@ export const TicketForm: React.FC<TicketFormProps> = ({
     enabled: false, // 初回レンダリング時にはAPIを叩かない
   })
   const [newGenreTitle, setNewGenreTitle] = useState<string>()
+  const [selectedUserId, setSelectedUserId] = useState<number | undefined>(ticket?.User?.id)
 
   const onSubmit: SubmitHandler<FormData> = useCallback(
     async (data) => {
@@ -71,7 +72,7 @@ export const TicketForm: React.FC<TicketFormProps> = ({
         description: data.description,
         genreId: data.genreId,
         status: data.status,
-        userId: data.userId,
+        userId: selectedUserId,
         dueDate: dayjs(data.dueDate).toISOString(),
         startAt: dayjs(data.startAt).toISOString(),
         endAt: dayjs(data.endAt).toISOString(),
@@ -96,7 +97,7 @@ export const TicketForm: React.FC<TicketFormProps> = ({
           })
       }
     },
-    [newGenreTitle]
+    [newGenreTitle, selectedUserId]
   )
 
   return (
@@ -266,12 +267,13 @@ export const TicketForm: React.FC<TicketFormProps> = ({
                     helperText={fieldState.error?.message}
                   />
                 )}
-                onChange={(_, value) =>
+                onChange={(_, value) => {
+                  setSelectedUserId(value ?? undefined)
                   setValue('userId', value ?? undefined, {
                     shouldValidate: true,
                     shouldDirty: true,
                   })
-                }
+                }}
               />
             )}
           />

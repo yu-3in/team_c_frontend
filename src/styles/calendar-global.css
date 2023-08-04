@@ -67,3 +67,9 @@ thead {
   color: #8e8e95;
   border: 1px solid #D1D1D6;
 }
+
+
+::selection {
+  color: #fff;
+  background-color: #F67F46;
+}

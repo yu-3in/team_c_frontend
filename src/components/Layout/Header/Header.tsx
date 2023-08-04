@@ -21,6 +21,8 @@ import CloseIcon from '@mui/icons-material/Close'
 import { useNavigate } from 'react-router-dom'
 import { getMe, signOut } from '../../../apis/user'
 import { useQuery } from 'react-query'
+import LoginIcon from '@mui/icons-material/Login'
+import AddIcon from '@mui/icons-material/Add'
 
 export type HeaderProps = {
   //
@@ -29,7 +31,7 @@ export type HeaderProps = {
 export const Header: React.FC<HeaderProps> = () => {
   const [openNav, setOpenNav] = useState(false)
   const navigate = useNavigate()
-  const { data: user } = useQuery(['user'], getMe)
+  const { data: user, isLoading, refetch } = useQuery(['user'], getMe, { retry: false })
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null)
   const theme = useTheme()
   const md = useMediaQuery(theme.breakpoints.up('md'))
@@ -39,8 +41,9 @@ export const Header: React.FC<HeaderProps> = () => {
   }
 
   const onLogout = useCallback(() => {
-    void signOut().then((_) => {
-      navigate('/login')
+    void signOut().then(async (_) => {
+      await refetch()
+      location.href = '/login'
     })
   }, [])
 
@@ -102,7 +105,13 @@ export const Header: React.FC<HeaderProps> = () => {
                   </Box>
                 </div>
               ) : (
-                <Button variant="contained">ログイン</Button>
+                <>
+                  {!isLoading && (
+                    <Button variant="contained" onClick={() => navigate('/login')}>
+                      ログイン
+                    </Button>
+                  )}
+                </>
               )}
             </div>
             <div className="lg:hidden">
@@ -116,12 +125,34 @@ export const Header: React.FC<HeaderProps> = () => {
           <NavList />
           <div className="-mt-3 pl-4">
             <List disablePadding={md}>
-              <ListItemButton className="flex gap-4" onClick={onLogout}>
-                <ListItemIcon sx={{ minWidth: 0 }}>
-                  <LogoutIcon />
-                </ListItemIcon>
-                <ListItemText className="text-gray-700">ログアウト</ListItemText>
-              </ListItemButton>
+              {user ? (
+                <div className="mt-3">
+                  <ListItemButton className="flex gap-4" onClick={onLogout}>
+                    <ListItemIcon sx={{ minWidth: 0 }}>
+                      <LogoutIcon />
+                    </ListItemIcon>
+                    <ListItemText className="text-gray-700">ログアウト</ListItemText>
+                  </ListItemButton>
+                </div>
+              ) : (
+                <div className="mt-3">
+                  <ListItemButton className="flex gap-4" onClick={() => navigate('/signup')}>
+                    <ListItemIcon sx={{ minWidth: 0 }}>
+                      <AddIcon />
+                    </ListItemIcon>
+                    <ListItemText className="text-gray-700">サインイン</ListItemText>
+                  </ListItemButton>
+
+                  <div className="-mt-1">
+                    <ListItemButton className="flex gap-4" onClick={() => navigate('/login')}>
+                      <ListItemIcon sx={{ minWidth: 0 }}>
+                        <LoginIcon />
+                      </ListItemIcon>
+                      <ListItemText className="text-gray-700">ログイン</ListItemText>
+                    </ListItemButton>
+                  </div>
+                </div>
+              )}
             </List>
           </div>
         </Collapse>

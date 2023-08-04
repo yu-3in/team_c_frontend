@@ -68,7 +68,10 @@ export const Home: React.FC = () => {
       <Layout>
         <div className={styles.body}>
           <div className={styles.tickets}>
-            <div className="flex flex-col items-center gap-4">
+            <div className="flex flex-col items-start gap-4">
+              <div className="mb-1 ml-2 mt-4">
+                <h1 className="text-2xl font-bold">マイチケット</h1>
+              </div>
               {['doing', 'todo', 'done'].map((status) => (
                 <div className="w-full" key={status}>
                   <TicketList
@@ -116,7 +119,7 @@ export const Home: React.FC = () => {
               locale="ja"
               headerToolbar={{
                 left: 'dayGridMonth,timeGridWeek,timeGridDay',
-                center: '',
+                center: 'title',
                 right: 'prev,next',
               }}
               events={events}

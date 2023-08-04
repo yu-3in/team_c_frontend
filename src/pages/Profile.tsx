@@ -11,6 +11,7 @@ import { Ticket } from '../types/ticket'
 import { TicketList } from '../components/Tickets/TicketList'
 import { SidePanel } from '../components/Panel/SidePanel'
 import { TicketForm } from '../components/Tickets/TicketForm'
+import { getMe } from '../apis/user'
 
 const Profile: React.FC = () => {
   const { data: genres } = useQuery(['genres'], getGenres)
@@ -19,11 +20,17 @@ const Profile: React.FC = () => {
     isFetching: isFetchingTickets,
     refetch: refreshTickets,
   } = useQuery(['tickets'], () => getTickets())
+  const { data: user } = useQuery(['user'], getMe)
 
   const [scores, setScores] = useState<number[]>([])
   const [doneTickets, setDoneTickets] = useState<Ticket[]>([])
   const [openEditDrawer, setOpenEditDrawer] = useState(false)
   const [clickedTicket, setClickedTicket] = useState<Ticket>()
+
+  useEffect(() => {
+    // NOTE: グラフが表示されないことがある
+    void refreshTickets()
+  }, [])
 
   const handleClickTicketCard = useCallback((ticket: Ticket) => {
     setOpenEditDrawer(true)
@@ -42,7 +49,9 @@ const Profile: React.FC = () => {
   }, [tickets])
 
   useEffect(() => {
-    setDoneTickets(tickets?.filter((ticket) => ticket.status === 'done') ?? [])
+    setDoneTickets(
+      tickets?.filter((ticket) => ticket.status === 'done' && ticket.User?.id === user?.id) ?? []
+    )
   }, [tickets])
 
   // Highchartsのオプション設定

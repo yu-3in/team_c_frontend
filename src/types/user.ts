@@ -4,7 +4,7 @@ export type User = {
   id: number
   name: string
   email: string
-  genres: Genre[]
+  genres?: Genre[]
   departmentName?: string
   productName?: string
   iconColor?: string

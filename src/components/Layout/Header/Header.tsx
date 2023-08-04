@@ -3,7 +3,6 @@ import { Navbar, Collapse } from '@material-tailwind/react'
 import {
   Avatar,
   Box,
-  Button,
   IconButton,
   List,
   ListItemButton,
@@ -31,7 +30,7 @@ export type HeaderProps = {
 export const Header: React.FC<HeaderProps> = () => {
   const [openNav, setOpenNav] = useState(false)
   const navigate = useNavigate()
-  const { data: user, isLoading, refetch } = useQuery(['user'], getMe, { retry: false })
+  const { data: user, refetch } = useQuery(['user'], getMe, { retry: false })
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null)
   const theme = useTheme()
   const md = useMediaQuery(theme.breakpoints.up('md'))
@@ -61,9 +60,11 @@ export const Header: React.FC<HeaderProps> = () => {
               onClick={() => navigate('/')}>
               <img src="/logo-a.svg" className="h-6" />
             </div>
-            <div className="hidden lg:block">
-              <NavList />
-            </div>
+            {user && (
+              <div className="hidden lg:block">
+                <NavList />
+              </div>
+            )}
           </div>
           <div className="flex">
             <div className="hidden gap-2 lg:flex">
@@ -107,13 +108,7 @@ export const Header: React.FC<HeaderProps> = () => {
                   </Box>
                 </div>
               ) : (
-                <>
-                  {!isLoading && (
-                    <Button variant="contained" onClick={() => navigate('/login')}>
-                      ログイン
-                    </Button>
-                  )}
-                </>
+                <></>
               )}
             </div>
             <div className="lg:hidden">
@@ -124,7 +119,7 @@ export const Header: React.FC<HeaderProps> = () => {
           </div>
         </div>
         <Collapse open={openNav} className="lg:hidden">
-          <NavList />
+          {user && <NavList />}
           <div className="-mt-3 pl-4">
             <List disablePadding={md}>
               {user ? (

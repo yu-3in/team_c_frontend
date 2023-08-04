@@ -34,6 +34,14 @@ const sorts: { label: string; value: Sort }[] = [
     label: '更新日が古い順',
     value: 'oldest_update',
   },
+  {
+    label: '期限が近い順',
+    value: 'latest_due_date',
+  },
+  {
+    label: '期限が遠い順',
+    value: 'oldest_due_date',
+  },
 ]
 
 export const Tickets: React.FC = () => {

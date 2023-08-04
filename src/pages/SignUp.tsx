@@ -31,7 +31,7 @@ const SignUp = () => {
         <div className="w-full max-w-xl rounded-md bg-white p-8">
           <div className="mt-3 flex w-full flex-col items-center justify-center">
             <h1 className="text-3xl font-bold">サインアップ</h1>
-            <p className="mt-2 text-[#636366]">サービス名のアカウントを作成する</p>
+            <p className="mt-2 text-[#636366]">Ticket MANのアカウントを作成する</p>
           </div>
           {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
           <form className="mx-auto mt-3 w-full" onSubmit={handleSubmit(onSubmit)}>

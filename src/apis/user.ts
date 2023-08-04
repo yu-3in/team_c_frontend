@@ -55,7 +55,14 @@ export const getMe = () => {
   })
 }
 
-export const updateMe = (user: User) => {
+export type UpdateMeRequest = {
+  name: string
+  email: string
+  departmentName?: string
+  productName?: string
+}
+
+export const updateMe = (user: UpdateMeRequest) => {
   return apiClient.put<User>('/me', user).then((res) => {
     return res.data
   })

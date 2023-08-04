@@ -33,7 +33,13 @@ export const TicketsCard: React.FC<TicketsCardProps> = ({ ticket, onClick }) => 
               <div className="truncate pl-4 text-sm text-[#636366]">{ticket.description}</div>
             </div>
             <div className="col-span-2">
-              {ticket.User ? <Avatar sx={{ bgcolor: ticket.User?.iconColor }}></Avatar> : '✋'}
+              {ticket.User ? (
+                <Avatar sx={{ bgcolor: ticket.User?.iconColor }}>
+                  {ticket.User?.name ? ticket.User.name.charAt(0) : ''}
+                </Avatar>
+              ) : (
+                '✋'
+              )}
             </div>
           </div>
           <div className="flex items-center gap-6 text-sm">

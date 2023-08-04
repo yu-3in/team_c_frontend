@@ -39,20 +39,20 @@ const Profile: React.FC = () => {
 
   useEffect(() => {
     const newScores = genres?.map((genre) => {
-      const filteredTickets = tickets?.filter(
+      const filteredTickets = doneTickets?.filter(
         (ticket) => ticket.status === 'done' && ticket.Genre.id === genre.id
       )
 
       return filteredTickets?.length ?? 0
     })
     setScores(newScores ?? [])
-  }, [tickets])
+  }, [tickets, doneTickets])
 
   useEffect(() => {
     setDoneTickets(
       tickets?.filter((ticket) => ticket.status === 'done' && ticket.User?.id === user?.id) ?? []
     )
-  }, [tickets])
+  }, [tickets, user])
 
   // Highchartsのオプション設定
   const options = useMemo(
@@ -121,7 +121,7 @@ const Profile: React.FC = () => {
         ],
       },
     }),
-    [scores, genres, tickets]
+    [scores, genres, tickets, user]
   )
 
   return (

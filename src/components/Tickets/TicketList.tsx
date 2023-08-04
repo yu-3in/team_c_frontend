@@ -42,7 +42,7 @@ export const TicketList: React.FC<TicketListProps> = ({
         <div
           className="h-6 w-6 rounded-full"
           style={{ backgroundColor: statusConfig[status].circleColor }}></div>
-        <h2 className="text-2xl font-bold">{statusConfig[status].title}</h2>
+        <h2 className="text-[22px] font-bold">{statusConfig[status].title}</h2>
       </div>
       {tickets.length > 0 ? (
         <ul

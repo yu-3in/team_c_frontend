@@ -149,7 +149,7 @@ const Calendar = () => {
               locale="ja"
               headerToolbar={{
                 left: 'dayGridMonth,timeGridWeek,timeGridDay',
-                center: '',
+                center: 'title',
                 right: 'prev,next',
               }}
               events={events}

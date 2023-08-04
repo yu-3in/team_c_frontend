@@ -73,3 +73,11 @@ thead {
   color: #fff;
   background-color: #F67F46;
 }
+
+.fc .fc-toolbar-title {
+  font-size: 20px;
+}
+
+.fc-col-header-cell-cushion {
+  font-size: 14px;
+}

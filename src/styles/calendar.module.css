@@ -1,17 +1,11 @@
 body {
-  background: #FDF7F4;
+  background: #fdf7f4;
 }
 
 .contents {
   width: 100%;
   padding: 0 30px;
   height: calc(100vh - 120px);
-}
-
-.wrapper {
-  width: 100%;
-  height: 100%;
-  display: flex;
 }
 
 .side {

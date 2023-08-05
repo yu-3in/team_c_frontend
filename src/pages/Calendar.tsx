@@ -102,7 +102,7 @@ const Calendar = () => {
   return (
     <Layout>
       <div className={styles.contents}>
-        <div className={styles.wrapper}>
+        <div className="flex h-[100vh] w-full flex-col lg:flex-row">
           <div className="relative pl-4 pt-5">
             <Button
               variant="contained"
@@ -115,8 +115,8 @@ const Calendar = () => {
               <PersonIcon />
               チームメンバー
             </h1>
-            <div className="max-h-[58vh] w-[280px] overflow-y-auto">
-              <List sx={{ width: '100%', ml: -2 }}>
+            <div className="overflow-auto lg:max-h-[58vh] lg:w-[280px]">
+              <List sx={{ width: '100%', ml: -2 }} className="flex flex-row lg:flex-col">
                 {users?.map((user) => {
                   const labelId = `checkbox-list-label-${user.id}`
 

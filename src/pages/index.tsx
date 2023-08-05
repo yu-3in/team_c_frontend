@@ -66,7 +66,7 @@ export const Home: React.FC = () => {
   return (
     <>
       <Layout>
-        <div className={styles.body}>
+        <div className="flex flex-col gap-4 px-4 pt-0 lg:flex-row">
           <div className={styles.tickets}>
             <div className="flex flex-col items-start gap-4">
               <div className="mb-1 ml-2 mt-4">
@@ -83,7 +83,7 @@ export const Home: React.FC = () => {
                       setTargetStatus(status as Status)
                     }}
                     isLoading={isFetchingTickets}
-                    className="min-w-[350px]"
+                    className="min-w-[200px]"
                   />
                 </div>
               ))}
@@ -112,7 +112,7 @@ export const Home: React.FC = () => {
 
           <div className={styles.calendar}>
             <FullCalendar
-              height="100%"
+              height="80vh"
               plugins={[timeGridPlugin, dayGridPlugin, interactionPlugin]}
               initialView="timeGridDay"
               locales={[jaLocale]}

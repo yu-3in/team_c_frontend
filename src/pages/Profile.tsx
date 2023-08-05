@@ -129,10 +129,10 @@ const Profile: React.FC = () => {
       <Layout>
         <div className={styles.contents}>
           <div className="grid w-full grid-cols-6 pt-10">
-            <div className="col-span-2 p-8">
+            <div className="col-span-6 p-8 lg:col-span-2">
               <ProfileSideBar />
             </div>
-            <div className="col-span-4 rounded-xl bg-white p-4">
+            <div className="col-span-6 rounded-xl bg-white p-4 lg:col-span-4">
               <div className="flex flex-col gap-4">
                 <HighchartsReact highcharts={Highcharts} options={options} />
                 <TicketList

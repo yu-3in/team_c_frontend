@@ -76,7 +76,7 @@ export const Tickets: React.FC = () => {
     <Layout>
       <Container maxWidth="xl">
         <div className="px-8">
-          <div className="mb-4 flex justify-end gap-2">
+          <div className="mb-4 flex flex-wrap justify-end gap-2">
             <Autocomplete
               options={users?.map((user) => user.id.toString()) ?? []}
               defaultValue={''}
@@ -149,7 +149,7 @@ export const Tickets: React.FC = () => {
             </Button>
           </div>
           <div className="flex justify-center">
-            <div className="flex w-full gap-4 overflow-x-auto pb-2">
+            <div className="flex w-full flex-col gap-4 overflow-x-auto pb-2 lg:flex-row">
               {['todo', 'doing', 'done'].map((status) => (
                 <div className="w-full" key={status}>
                   <TicketList
